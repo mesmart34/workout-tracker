@@ -1,0 +1,41 @@
+@using WorkoutTracker.Domain.Entities
+
+<RadzenTemplateForm TItem="EquipmentEntity"
+                    Submit="@(Submit)"
+                    Data="@_model">
+    <RadzenRow AlignItems="AlignItems.Center"
+               RowGap="0.25rem"
+               class="w-100 mb-2">
+        <RadzenColumn Size="12"
+                      SizeMD="2"
+                      class="rz-text-align-start rz-text-align-md-end">
+            <RadzenLabel>Name:</RadzenLabel>
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="10">
+            <RadzenTextBox @bind-Value="@_model.Name"
+                           Name="@nameof(_model.Name)"
+                           Style="display: block; width: 100%;"/>
+            <RadzenRequiredValidator Component="@nameof(_model.Name)"
+                                     Style="position: absolute"
+                                     Text="Required"/>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <RadzenStack Orientation="@Orientation.Horizontal"
+                 AlignItems="AlignItems.Center"
+                 JustifyContent="JustifyContent.End"
+                 Gap="1rem">
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Variant="Variant.Flat"
+                      ButtonType="ButtonType.Submit"
+                      Size="ButtonSize.Medium">Submit
+        </RadzenButton>
+        <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                      Variant="Variant.Flat"
+                      Size="ButtonSize.Medium"
+                      ButtonType="ButtonType.Reset"
+                      Click="@Close"
+                      Shade="Shade.Lighter">Cancel
+        </RadzenButton>
+    </RadzenStack>
+</RadzenTemplateForm>

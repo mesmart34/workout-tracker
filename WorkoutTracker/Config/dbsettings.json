@@ -1,0 +1,9 @@
+{
+  "DatabaseSettings": {
+    "Endpoint": "db",
+    "Port": "5432",
+    "Database": "workout",
+    "Username": "postgres",
+    "Password": "postgres" 
+  }
+}

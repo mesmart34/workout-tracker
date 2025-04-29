@@ -1,16 +1,21 @@
-﻿services:
+﻿version: '3.4'
+
+services:
   postgres:
-    image: postgres:17.4-alpine
+    container_name: db
+    image: postgres:17
     networks:
       - workout-tracker-net
     environment:
-      POSTGRES_DB: "workout-tracker-db"
+      POSTGRES_DB: "workout"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
       
   workout-tracker:
+    depends_on:
+      - postgres
     image: workout-tracker
     networks:
       - workout-tracker-net
@@ -19,7 +24,8 @@
       dockerfile: WorkoutTracker/Dockerfile
     ports:
       - "8080:8080"
-      
+
 networks:
   workout-tracker-net:
     external: true
+    driver: bridge

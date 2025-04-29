@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yaml = docker-compose.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutTracker.Application", "WorkoutTracker.Application\WorkoutTracker.Application.csproj", "{706B2A0E-C6A1-4F60-8645-2125B5A3B60A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutTracker.Domain", "WorkoutTracker.Domain\WorkoutTracker.Domain.csproj", "{D07BA333-B2CC-4130-87DB-DE2B6487CC7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutTracker.Infrastructure", "WorkoutTracker.Infrastructure\WorkoutTracker.Infrastructure.csproj", "{8AC4DCAE-C8F5-4A02-9D50-7CA29E33711D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,5 +23,17 @@ Global
 		{09F210CF-A6A0-4AA8-9E07-30D833D98B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09F210CF-A6A0-4AA8-9E07-30D833D98B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09F210CF-A6A0-4AA8-9E07-30D833D98B73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{706B2A0E-C6A1-4F60-8645-2125B5A3B60A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{706B2A0E-C6A1-4F60-8645-2125B5A3B60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{706B2A0E-C6A1-4F60-8645-2125B5A3B60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{706B2A0E-C6A1-4F60-8645-2125B5A3B60A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D07BA333-B2CC-4130-87DB-DE2B6487CC7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D07BA333-B2CC-4130-87DB-DE2B6487CC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D07BA333-B2CC-4130-87DB-DE2B6487CC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D07BA333-B2CC-4130-87DB-DE2B6487CC7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AC4DCAE-C8F5-4A02-9D50-7CA29E33711D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC4DCAE-C8F5-4A02-9D50-7CA29E33711D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC4DCAE-C8F5-4A02-9D50-7CA29E33711D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC4DCAE-C8F5-4A02-9D50-7CA29E33711D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

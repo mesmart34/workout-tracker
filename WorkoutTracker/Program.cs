@@ -1,5 +1,7 @@
 using Radzen;
+using WorkoutTracker;
 using WorkoutTracker.Components;
+using WorkoutTracker.Infrastructure.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddRadzenComponents();
+builder.Setup();
 
 var app = builder.Build();
+await app.AddDb();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,0 +1,46 @@
+@typeparam T
+
+<RadzenDataGrid @ref="@_radzenDataGrid"
+                TItem="T"
+                Data="@_data"
+                AllowPaging="true"
+                LoadData="@LoadData"
+                PageSize="10">
+    <HeaderTemplate>
+        <RadzenButton ButtonStyle="ButtonStyle.Success"
+                      Icon="add_circle"
+                      Text="Add"
+                      Click="@(() => AddItemAction?.Invoke())"/>
+    </HeaderTemplate>
+    <Columns>
+        @foreach (var column in Columns)
+        {
+            <RadzenDataGridColumn Property="@nameof(column.Name)"
+                                  TextAlign="TextAlign.Left"
+                                  Title="@column.Caption">
+            </RadzenDataGridColumn>   
+        }
+
+        <RadzenDataGridColumn Filterable="false"
+                              Sortable="false"
+                              Width="100px"
+                              TextAlign="TextAlign.Center"
+                              Frozen="true"
+                              FrozenPosition="FrozenColumnPosition.Right">
+            <Template Context="item">
+                <RadzenButton Icon="edit"
+                              ButtonStyle="ButtonStyle.Light"
+                              Variant="Variant.Flat"
+                              Size="ButtonSize.Medium"
+                              class="rz-my-1 rz-ms-1"
+                              Click="@(() => EditItemAction?.Invoke(item))" @onclick:stopPropagation="true"/>
+                <RadzenButton Icon="delete"
+                              ButtonStyle="ButtonStyle.Danger"
+                              Variant="Variant.Flat"
+                              Size="ButtonSize.Medium"
+                              Shade="Shade.Lighter" class="rz-my-1 rz-ms-1"
+                              Click="@(() => DeleteItemAction?.Invoke(item))" @onclick:stopPropagation="true"/>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
