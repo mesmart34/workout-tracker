@@ -1,0 +1,14 @@
+@page "/"
+@using WorkoutTracker.Common
+@using WorkoutTracker.Domain.Entities
+@using WorkoutTracker.Components.Shared
+
+<DataGrid T="EquipmentEntity"
+          @ref="@_grid"
+          Service="EquipmentService"
+          Columns="@_columns"
+          AddItemAction="@AddItem"
+          DeleteItemAction="@DeleteItem"
+          EditItemAction="@EditItem">
+    
+</DataGrid>
