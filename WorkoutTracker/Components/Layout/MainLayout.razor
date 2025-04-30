@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Resources
+@using WorkoutTracker.Shared.Resources
+@inherits LayoutComponentBase
 
 <div class="page">
     <RadzenDialog/>
@@ -7,12 +9,14 @@
             <RadzenHeader>
                 <RadzenStack Orientation=" Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
                     <RadzenSidebarToggle Click="@(() => _sidebarExpanded = !_sidebarExpanded)"/>
-                    <RadzenLabel Text="Workout Tracker"/>
+                    <RadzenLabel Text="@Resource.WorkoutTrackerTitle"/>
                 </RadzenStack>
             </RadzenHeader>
             <RadzenSidebar @bind-Expanded="@_sidebarExpanded">
                 <RadzenPanelMenu>
-                    <RadzenPanelMenuItem Text="Equipment" Icon="fitness_center"/>
+                    <RadzenPanelMenuItem Text="Equipments" Icon="fitness_center" Path="/"/>
+                    <RadzenPanelMenuItem Text="Exercises" Icon="sports_gymnastics" Path="/exercises"/>
+                    <RadzenPanelMenuItem Text="Routines" Icon="list_alt" Path="routines"/>
                 </RadzenPanelMenu>
             </RadzenSidebar>
             <RadzenBody>

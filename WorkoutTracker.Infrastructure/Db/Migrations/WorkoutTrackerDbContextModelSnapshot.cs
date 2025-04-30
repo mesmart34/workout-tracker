@@ -76,6 +76,10 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("equipment_id");
 
+                    b.Property<int?>("ExerciseType")
+                        .HasColumnType("integer")
+                        .HasColumnName("exercise_type");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");

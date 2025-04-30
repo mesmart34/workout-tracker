@@ -1,3 +1,4 @@
+using System.Resources;
 using Microsoft.EntityFrameworkCore;
 using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Config;

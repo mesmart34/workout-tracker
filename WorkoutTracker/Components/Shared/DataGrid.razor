@@ -1,3 +1,5 @@
+@using WorkoutTracker.Common
+@using WorkoutTracker.Shared.Resources
 @typeparam T
 
 <RadzenDataGrid @ref="@_radzenDataGrid"
@@ -9,15 +11,24 @@
     <HeaderTemplate>
         <RadzenButton ButtonStyle="ButtonStyle.Success"
                       Icon="add_circle"
-                      Text="Add"
+                      Text="@Resource.AddButton"
                       Click="@(() => AddItemAction?.Invoke())"/>
     </HeaderTemplate>
     <Columns>
         @foreach (var column in Columns)
         {
-            <RadzenDataGridColumn Property="@nameof(column.Name)"
-                                  TextAlign="TextAlign.Left"
+            <RadzenDataGridColumn TextAlign="TextAlign.Left"
                                   Title="@column.Caption">
+                <Template Context="item">
+                    @if (column.Template != null)
+                    {
+                        @column.Template.Invoke(item);
+                    }
+                    else
+                    {
+                        @column.Caption
+                    }
+                </Template>
             </RadzenDataGridColumn>   
         }
 

@@ -1,6 +1,4 @@
-﻿version: '3.4'
-
-services:
+﻿services:
   postgres:
     container_name: db
     image: postgres:17

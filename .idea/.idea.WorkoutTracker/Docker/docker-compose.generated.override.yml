@@ -1,5 +1,4 @@
 # This is a generated file. Not intended for manual editing.
-version: "3.4"
 services:
   workout-tracker:
     build:
@@ -26,9 +25,9 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
     image: "workout-tracker:dev"
     ports:
-    - "127.0.0.1:57028:57000"
-    - "127.0.0.1:57228:57200"
-    - "127.0.0.1:57428:57400"
+    - "127.0.0.1:57024:57000"
+    - "127.0.0.1:57224:57200"
+    - "127.0.0.1:57424:57400"
     volumes:
     - "C:\\Users\\mesmart34\\Documents\\WorkoutTracker\\WorkoutTracker:/app:rw"
     - "C:\\Users\\mesmart34\\Documents\\WorkoutTracker:/src:rw"
@@ -37,5 +36,5 @@ services:
       Linux64:/opt/JetBrains/RiderDebuggerTools"
     - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.3.6\\bin\\backend-log.xml:/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
     - "C:\\Users\\mesmart34\\AppData\\Local\\JetBrains\\Rider2024.3\\log\\DebuggerWorker\\\
-      JetBrains.Debugger.Worker.2025_4_30_02_26_15:/var/opt/JetBrains/RiderDebuggerTools:rw"
+      JetBrains.Debugger.Worker.2025_4_30_19_40_17:/var/opt/JetBrains/RiderDebuggerTools:rw"
     working_dir: "/app"

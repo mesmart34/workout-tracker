@@ -6,4 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="UnitsNet" Version="5.74.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WorkoutTracker.Shared\WorkoutTracker.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -21,6 +21,8 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<ExerciseEntity>
             .HasForeignKey(x => x.EquipmentId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.Property(x => x.ExerciseType);
+
         builder.Property(x => x.DateCreated)
             .IsRequired();
         

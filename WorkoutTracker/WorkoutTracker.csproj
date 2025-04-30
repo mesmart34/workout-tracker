@@ -20,6 +20,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.4" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
       <PackageReference Include="Radzen.Blazor" Version="6.6.3" />
       <PackageReference Include="Scrutor" Version="6.0.1" />
@@ -29,6 +30,18 @@
       <ProjectReference Include="..\WorkoutTracker.Application\WorkoutTracker.Application.csproj" />
       <ProjectReference Include="..\WorkoutTracker.Domain\WorkoutTracker.Domain.csproj" />
       <ProjectReference Include="..\WorkoutTracker.Infrastructure\WorkoutTracker.Infrastructure.csproj" />
+      <ProjectReference Include="..\WorkoutTracker.Shared\WorkoutTracker.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="aboba.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>aboba.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="aboba.Designer.cs" />
     </ItemGroup>
 
 </Project>

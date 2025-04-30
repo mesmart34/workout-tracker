@@ -1,2 +1,12 @@
 @page "/routines"
+@using WorkoutTracker.Components.Shared
+@using WorkoutTracker.Domain.Entities
 
+<DataGrid T="RoutineEntity"
+          @ref="@_grid"
+          Service="RoutineService"
+          Columns="@_columns"
+          AddItemAction="@AddItem"
+          DeleteItemAction="@DeleteItem"
+          EditItemAction="@EditItem">
+</DataGrid>

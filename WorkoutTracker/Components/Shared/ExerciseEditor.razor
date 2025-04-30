@@ -1,8 +1,9 @@
+@using WorkoutTracker.Application.Utils
 @using WorkoutTracker.Domain.Entities
 @using WorkoutTracker.Shared.Resources
 
-<RadzenTemplateForm TItem="EquipmentEntity"
-                    Submit="@(Submit)"
+<RadzenTemplateForm TItem="ExerciseEntity"
+                    Submit="@Submit"
                     Data="@_model">
     <RadzenRow AlignItems="AlignItems.Center"
                RowGap="0.25rem"
@@ -22,6 +23,25 @@
         </RadzenColumn>
     </RadzenRow>
 
+    <RadzenRow AlignItems="AlignItems.Center"
+               RowGap="0.25rem"
+               class="w-100 mb-2">
+        <RadzenColumn Size="12"
+                      SizeMD="2"
+                      class="rz-text-align-start rz-text-align-md-end">
+            <RadzenLabel>@Resource.Type:</RadzenLabel>
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="10">
+            <RadzenDropDown @bind-Value="@_model.ExerciseType"
+                            Data="@_exerciseTypes"
+                            Style="width: 100%;">
+                <Template Context="item">
+                    @((item as Enum)?.GetEnumDescription())
+                </Template>
+            </RadzenDropDown>
+        </RadzenColumn>
+    </RadzenRow>
+
     <RadzenStack Orientation="@Orientation.Horizontal"
                  AlignItems="AlignItems.Center"
                  JustifyContent="JustifyContent.End"
@@ -29,14 +49,14 @@
         <RadzenButton ButtonStyle="ButtonStyle.Light"
                       Variant="Variant.Flat"
                       ButtonType="ButtonType.Submit"
-                      Size="ButtonSize.Medium">Submit
+                      Size="ButtonSize.Medium">@Resource.SubmitButton
         </RadzenButton>
         <RadzenButton ButtonStyle="ButtonStyle.Danger"
                       Variant="Variant.Flat"
                       Size="ButtonSize.Medium"
                       ButtonType="ButtonType.Reset"
                       Click="@Close"
-                      Shade="Shade.Lighter">Cancel
+                      Shade="Shade.Lighter">@Resource.CancelButton
         </RadzenButton>
     </RadzenStack>
 </RadzenTemplateForm>

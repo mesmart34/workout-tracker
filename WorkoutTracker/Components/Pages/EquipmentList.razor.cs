@@ -18,7 +18,8 @@ public partial class EquipmentList : ComponentBase
         new ColumnDescription<EquipmentEntity>()
         {
             Name = nameof(EquipmentEntity.Name),
-            Caption = "Name"
+            Caption = "Name",
+            Template = x => (x as  EquipmentEntity)?.Name
         }
     };
 
