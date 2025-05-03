@@ -8,27 +8,22 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<ExerciseEntity>
 {
     public void Configure(EntityTypeBuilder<ExerciseEntity> builder)
     {
-        builder.ToTable("exercise");
+        builder.ConfigureNamed("exercise");
 
-        builder.HasKey(x => x.Id);
+        builder.Property(x => x.MuscleGroup)
+            .IsRequired();
         
-        builder.Property(x => x.Name)
+        builder.Property(x => x.ExerciseType)
             .IsRequired();
 
         builder.Property(x => x.EquipmentId);
         builder.HasOne(x => x.Equipment)
             .WithMany()
-            .HasForeignKey(x => x.EquipmentId)
+            .HasForeignKey(x => x.EquipmentId);
+
+        builder.HasMany(x => x.RoutineExercises)
+            .WithOne(x => x.Exercise)
+            .HasForeignKey(x => x.ExerciseId)
             .OnDelete(DeleteBehavior.SetNull);
-
-        builder.Property(x => x.ExerciseType);
-
-        builder.Property(x => x.DateCreated)
-            .IsRequired();
-        
-        builder.Property(x => x.DateUpdated)
-            .IsRequired();
-
-        builder.Property(x => x.IsDeleted);
     }
 }

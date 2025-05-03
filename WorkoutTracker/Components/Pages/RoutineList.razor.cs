@@ -3,6 +3,7 @@ using Radzen;
 using WorkoutTracker.Application.Service;
 using WorkoutTracker.Common;
 using WorkoutTracker.Components.Shared;
+using WorkoutTracker.Components.Shared.Dialogs;
 using WorkoutTracker.Domain.Entities;
 
 namespace WorkoutTracker.Components.Pages;
@@ -24,6 +25,9 @@ public partial class RoutineList : ComponentBase
 
     [Inject] public DialogService DialogService { get; set; } = null!;
 
+    [Inject] 
+    public NavigationManager NavigationManager { get; set; } = null!;
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -31,16 +35,18 @@ public partial class RoutineList : ComponentBase
 
     private async void AddItem()
     {
-        var item = new RoutineEntity();
-        var result = await DialogService.OpenAsync<EquipmentEdit>("Routine Editor", new Dictionary<string, object>()
-        {
-            ["Model"] = item
-        });
-        if (result == true)
-        {
-            await RoutineService.Add(item);
-            await _grid.Reload();
-        }
+        NavigationManager.NavigateTo("/routine/editor");
+        
+        // var item = new RoutineEntity();
+        // var result = await DialogService.OpenAsync<RoutineEditor>("Routine Editor", new Dictionary<string, object>()
+        // {
+        //     ["Model"] = item
+        // }, new DialogOptions());
+        // if (result == true)
+        // {
+        //     await RoutineService.Add(item);
+        //     await _grid.Reload();
+        // }
     }
 
     private async void DeleteItem(RoutineEntity item)
@@ -51,7 +57,7 @@ public partial class RoutineList : ComponentBase
 
     private async void EditItem(RoutineEntity item)
     {
-        var result = await DialogService.OpenAsync<EquipmentEdit>("Routine Editor", new Dictionary<string, object>()
+        var result = await DialogService.OpenAsync<RoutineEditor>("Routine Editor", new Dictionary<string, object>()
         {
             ["Model"] = item
         });

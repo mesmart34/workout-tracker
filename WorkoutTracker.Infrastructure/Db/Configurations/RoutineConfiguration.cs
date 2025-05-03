@@ -8,23 +8,11 @@ public class RoutineConfiguration : IEntityTypeConfiguration<RoutineEntity>
 {
     public void Configure(EntityTypeBuilder<RoutineEntity> builder)
     {
-        builder.ToTable("routine");
+        builder.ConfigureNamed("routine");
 
-        builder.HasKey(x => x.Id);
-        
-        builder.Property(x => x.Name)
-            .IsRequired();
-
-        builder.HasMany(x => x.Exercises)
-            .WithOne()
-            .HasForeignKey(x => x.EquipmentId);
-
-        builder.Property(x => x.DateCreated)
-            .IsRequired();
-        
-        builder.Property(x => x.DateUpdated)
-            .IsRequired();
-
-        builder.Property(x => x.IsDeleted);
+        builder.HasMany(x => x.RoutineExercises)
+            .WithOne(x => x.Routine)
+            .HasForeignKey(x => x.RoutineId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

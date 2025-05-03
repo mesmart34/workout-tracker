@@ -1,0 +1,68 @@
+@page "/routine/editor/"
+@page "/routine/editor/{id:guid}"
+@using WorkoutTracker.Domain.Entities
+@using WorkoutTracker.Shared.Resources
+
+<RadzenTemplateForm TItem="RoutineEntity"
+                    Submit="@(Submit)"
+                    Data="@_model">
+    <RadzenStack Orientation="@Orientation.Vertical"
+                 AlignItems="AlignItems.Center"
+                 Style="height: 100%"
+                 JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenRow AlignItems="AlignItems.Center"
+                   RowGap="0.25rem"
+                   class="w-100 mb-2">
+            <RadzenColumn Size="12"
+                          SizeMD="2"
+                          class="rz-text-align-start rz-text-align-md-end">
+                <RadzenLabel>@Resource.Name:</RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="10">
+                <RadzenTextBox @bind-Value="@_model.Name"
+                               Name="@nameof(_model.Name)"
+                               Style="display: block; width: 100%;"/>
+                <RadzenRequiredValidator Component="@nameof(_model.Name)"
+                                         Style="position: absolute"
+                                         Text="Required"/>
+            </RadzenColumn>
+        </RadzenRow>
+        
+        <RadzenStack>
+            <RadzenButton Text="@Resource.AddButton"
+                          Click="@AddItem"/>
+            @foreach (var exercise in _routineExerciseEntities)
+            {
+            <RadzenPanel>
+                <RadzenText Text="@exercise.Exercise.Name"/>
+                <RadzenDropDown TValue="ExerciseEntity"
+                                TextProperty="@nameof(ExerciseEntity.Name)"
+                                Data="@_exercises"
+                                @bind-Value="@exercise.Exercise"/>
+                @* <RadzenDropDown TValue="EquipmentEntity" *@
+                @*                 TextProperty="@nameof(EquipmentEntity.Name)" *@
+                @*                 Data="@_equipments" *@
+                @*                 @bind-Value="@exercise.Equipment"/> *@
+            </RadzenPanel>
+            }
+        </RadzenStack>
+
+        <RadzenStack Orientation="@Orientation.Horizontal"
+                     AlignItems="AlignItems.End"
+                     JustifyContent="JustifyContent.End"
+                     Gap="1rem">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Variant="Variant.Flat"
+                          ButtonType="ButtonType.Submit"
+                          Size="ButtonSize.Medium">Submit
+            </RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                          Variant="Variant.Flat"
+                          Size="ButtonSize.Medium"
+                          ButtonType="ButtonType.Reset"
+                          Click="@Close"
+                          Shade="Shade.Lighter">Cancel
+            </RadzenButton>
+        </RadzenStack>
+    </RadzenStack>
+</RadzenTemplateForm>

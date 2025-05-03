@@ -1,13 +1,12 @@
-using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using WorkoutTracker.Domain.Common;
 using WorkoutTracker.Domain.Entities;
 
-namespace WorkoutTracker.Components.Shared;
+namespace WorkoutTracker.Components.Shared.Dialogs;
 
-public partial class ExerciseEditor : ComponentBase
+public partial class ExerciseDialog : ComponentBase
 {
     private ExerciseEntity _model = new ();
     private IEnumerable<Enum>? _exerciseTypes;

@@ -1,0 +1,59 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AddButton" xml:space="preserve">
+        <value>Добавить</value>
+    </data>
+    <data name="CancelButton" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="ExerciseTypeTime" xml:space="preserve">
+        <value>Время</value>
+    </data>
+    <data name="ExerciseTypeWeight" xml:space="preserve">
+        <value>Вес</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Наименование</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Тип</value>
+    </data>
+    <data name="SubmitButton" xml:space="preserve">
+        <value>Принять</value>
+    </data>
+    <data name="EquipmentEditor" xml:space="preserve">
+        <value>Редактор экипировки</value>
+    </data>
+    <data name="Equipments" xml:space="preserve">
+        <value>Экипировка</value>
+    </data>
+    <data name="ExerciseEditor" xml:space="preserve">
+        <value>Редактор упражнений</value>
+    </data>
+    <data name="Exercises" xml:space="preserve">
+        <value>Упражнения</value>
+    </data>
+    <data name="Routines" xml:space="preserve">
+        <value>Рутина</value>
+    </data>
+    <data name="MuscleGroup" xml:space="preserve">
+        <value>Группа мышц</value>
+    </data>
+    <data name="Set" xml:space="preserve">
+        <value>Подход</value>
+    </data>
+    <data name="Sets" xml:space="preserve">
+        <value>Подходы</value>
+    </data>
+</root>

@@ -28,4 +28,10 @@ public sealed class WorkoutTrackerDbContext : DbContext
     
     public DbSet<RoutineEntity> Routines { get; set; }
     
+    public DbSet<RoutineExerciseEntity> RoutineExercises { get; set; }
+    
+    public DbSet<WorkoutSessionEntity> WorkoutSessions { get; set; }
+    
+    public DbSet<SetEntity> Sets { get; set; }
+    
 }

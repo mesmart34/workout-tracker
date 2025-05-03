@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 using WorkoutTracker.Domain.Entities;
 
-namespace WorkoutTracker.Components.Shared;
+namespace WorkoutTracker.Components.Shared.Dialogs;
 
-public partial class EquipmentEdit : ComponentBase
+public partial class EquipmentDialog : ComponentBase
 {
     private EquipmentEntity _model = new EquipmentEntity();
     
-    [Required] [Parameter] 
+    [Required] 
+    [Parameter] 
     public EquipmentEntity Model { get; set; } = null!;
     
     [Inject]

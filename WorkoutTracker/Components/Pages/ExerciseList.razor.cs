@@ -4,6 +4,7 @@ using WorkoutTracker.Application.Service;
 using WorkoutTracker.Application.Utils;
 using WorkoutTracker.Common;
 using WorkoutTracker.Components.Shared;
+using WorkoutTracker.Components.Shared.Dialogs;
 using WorkoutTracker.Domain.Common;
 using WorkoutTracker.Domain.Entities;
 using WorkoutTracker.Shared.Resources;
@@ -26,7 +27,13 @@ public partial class ExerciseList : ComponentBase
         {
             Name = nameof(ExerciseEntity.ExerciseType),
             Caption = Resource.Type,
-            Template = x => ((ExerciseEntity)x)?.ExerciseType?.GetEnumDescription()
+            Template = x => ((ExerciseEntity)x).ExerciseType.GetEnumDescription()
+        },
+        new ColumnDescription<ExerciseEntity>()
+        {
+            Name = nameof(ExerciseEntity.MuscleGroup),
+            //Caption = Resource.,
+            Template = x => ((ExerciseEntity)x).MuscleGroup.GetEnumDescription()
         }
     };
 
@@ -44,7 +51,7 @@ public partial class ExerciseList : ComponentBase
     private async void AddItem()
     {
         var item = new ExerciseEntity();
-        var result = await DialogService.OpenAsync<ExerciseEditor>("Exercise Editor", new Dictionary<string, object>()
+        var result = await DialogService.OpenAsync<ExerciseDialog>("Exercise Editor", new Dictionary<string, object>()
         {
             ["Model"] = item
         });
@@ -63,7 +70,7 @@ public partial class ExerciseList : ComponentBase
 
     private async void EditItem(ExerciseEntity item)
     {
-        var result = await DialogService.OpenAsync<ExerciseEditor>("Exercise Editor", new Dictionary<string, object>()
+        var result = await DialogService.OpenAsync<ExerciseDialog>("Exercise Editor", new Dictionary<string, object>()
         {
             ["Model"] = item
         });

@@ -57,4 +57,13 @@
     <data name="CancelButton" xml:space="preserve">
         <value>Cancel</value>
     </data>
+    <data name="MuscleGroup" xml:space="preserve">
+        <value>MuscleGroup</value>
+    </data>
+    <data name="Set" xml:space="preserve">
+        <value>Set</value>
+    </data>
+    <data name="Sets" xml:space="preserve">
+        <value>Sets</value>
+    </data>
 </root>

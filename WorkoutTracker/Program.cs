@@ -1,3 +1,4 @@
+using System.Globalization;
 using Radzen;
 using WorkoutTracker;
 using WorkoutTracker.Components;

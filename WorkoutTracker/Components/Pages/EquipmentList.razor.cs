@@ -4,6 +4,7 @@ using Radzen.Blazor;
 using WorkoutTracker.Application.Service;
 using WorkoutTracker.Common;
 using WorkoutTracker.Components.Shared;
+using WorkoutTracker.Components.Shared.Dialogs;
 using WorkoutTracker.Domain.Entities;
 
 namespace WorkoutTracker.Components.Pages;
@@ -36,7 +37,7 @@ public partial class EquipmentList : ComponentBase
     private async void AddItem()
     {
         var item = new EquipmentEntity();
-        var result = await DialogService.OpenAsync<EquipmentEdit>("Equipment Editor", new Dictionary<string, object>()
+        var result = await DialogService.OpenAsync<EquipmentDialog>("Equipment Editor", new Dictionary<string, object>()
         {
             ["Model"] = item
         });
@@ -55,7 +56,7 @@ public partial class EquipmentList : ComponentBase
 
     private async void EditItem(EquipmentEntity item)
     {
-        var result = await DialogService.OpenAsync<EquipmentEdit>("Equipment Editor", new Dictionary<string, object>()
+        var result = await DialogService.OpenAsync<EquipmentDialog>("Equipment Editor", new Dictionary<string, object>()
         {
             ["Model"] = item
         });

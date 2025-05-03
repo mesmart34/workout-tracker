@@ -2,5 +2,5 @@ namespace WorkoutTracker.Domain.Entities;
 
 public class RoutineEntity : BaseNamedEntity
 {
-    public virtual List<ExerciseEntity>? Exercises { get; set; }    
+    public virtual List<RoutineExerciseEntity> RoutineExercises { get; set; } = new();
 }

@@ -9,13 +9,28 @@ namespace WorkoutTracker.Application.Service;
 public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFactory) : IScopedService<T>
     where T : BaseEntity
 {
-    public async Task Add(T entity)
+    public async Task<T> Add(T entity)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
         entity.DateCreated = DateTime.UtcNow;
         entity.DateUpdated = DateTime.UtcNow;
         entity.IsDeleted = false;
         await context.Set<T>().AddAsync(entity);
+        await context.SaveChangesAsync();
+        return entity;
+    }
+    
+    public async Task AddRange(List<T> entities)
+    {
+        await using var context = await contextFactory.CreateDbContextAsync();
+        foreach (var entity in entities)
+        {
+            entity.DateCreated = DateTime.UtcNow;
+            entity.DateUpdated = DateTime.UtcNow;
+            entity.IsDeleted = false;    
+        }
+        
+        await context.Set<T>().AddRangeAsync(entities);
         await context.SaveChangesAsync();
     }
 
