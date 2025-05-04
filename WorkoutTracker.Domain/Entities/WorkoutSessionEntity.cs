@@ -8,7 +8,7 @@ public class WorkoutSessionEntity : BaseEntity
     
     public TimeSpan? Duration { get; set; }
     
-    public virtual List<SetEntity> Sets { get; set; } = null!; 
+    public virtual List<SetEntity> Sets { get; set; } = new(); 
     
     public Mood Mood { get; set; }
     

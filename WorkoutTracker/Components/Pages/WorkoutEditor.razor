@@ -1,2 +1,31 @@
 @page "/workouts/editor/{id:guid}"
+@page "/workouts/editor/"
 
+@if (_model != null)
+{
+    <RadzenFieldset Text="@_model.Routine.Name">
+        @if (_workout != null)
+        {
+            foreach (var (exercise, sets) in _workout)
+            {
+                <RadzenPanel>
+                    <RadzenText>@exercise.Name</RadzenText>
+                    <RadzenStack Orientation="Orientation.Horizontal">
+                        @foreach (var set in sets)
+                        {
+                            <RadzenStack Orientation="Orientation.Vertical">
+                                <RadzenText>@sets.IndexOf(set)</RadzenText>
+                                <RadzenNumeric TValue="int"
+                                               Min="0"
+                                               @bind-Value="@set.Reps"/>
+                                <RadzenNumeric TValue="float"
+                                               Min="0"
+                                               @bind-Value="@set.Weight"/>
+                            </RadzenStack>
+                        }
+                    </RadzenStack>
+                </RadzenPanel>
+            }
+        }
+    </RadzenFieldset>
+}

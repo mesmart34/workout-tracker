@@ -6,7 +6,8 @@ namespace WorkoutTracker.Components.Pages;
 
 public partial class WorkoutEditor : ComponentBase
 {
-    private WorkoutSessionEntity _model = new();
+    private WorkoutSessionEntity? _model;
+    private Dictionary<ExerciseEntity, List<SetEntity>>? _workout = new();
     
     [Parameter]
     public Guid? Id { get; set; }
@@ -18,8 +19,10 @@ public partial class WorkoutEditor : ComponentBase
     {
         if (Id != null)
         {
-            _model = await WorkoutSessionService.Get(Id.Value) ?? new();
+            _model = await WorkoutSessionService.Get(Id.Value);
         }
+        
+        _workout = _model?.Sets.GroupBy(x => x.Exercise).ToDictionary(x => x.Key, x => x.ToList());
         
         await base.OnInitializedAsync();
     }
