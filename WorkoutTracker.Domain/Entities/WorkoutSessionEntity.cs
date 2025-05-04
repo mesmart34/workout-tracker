@@ -12,4 +12,7 @@ public class WorkoutSessionEntity : BaseEntity
     
     public Mood Mood { get; set; }
     
+    public Guid RoutineId { get; set; }
+    public virtual RoutineEntity Routine { get; set; } = null!;
+
 }

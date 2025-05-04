@@ -175,5 +175,23 @@ namespace WorkoutTracker.Shared.Resources {
                 return ResourceManager.GetString("WorkoutTrackerTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MuscleGroup.
+        /// </summary>
+        public static string MuscleGroup {
+            get {
+                return ResourceManager.GetString("MuscleGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Biceps.
+        /// </summary>
+        public static string Biceps {
+            get {
+                return ResourceManager.GetString("Biceps", resourceCulture);
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@ public static class ConfigureApp
         var configuration = builder.Configuration;
         var config = configuration.GetSection("DatabaseSettings").Get<DbSettings>();
         builder.Services.AddPooledDbContextFactory<WorkoutTrackerDbContext>(x => 
-            x.UseLazyLoadingProxies()
+            x
                 .UseNpgsql(config?.ConnectionString())
                 .UseSnakeCaseNamingConvention());
     }

@@ -56,4 +56,7 @@
     <data name="Sets" xml:space="preserve">
         <value>Подходы</value>
     </data>
+    <data name="WorkoutTrackerTitle" xml:space="preserve">
+        <value>Workout Tracker</value>
+    </data>
 </root>

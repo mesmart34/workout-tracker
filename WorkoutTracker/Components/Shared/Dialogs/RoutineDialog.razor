@@ -1,0 +1,85 @@
+@page "/routine/editor/"
+@page "/routine/editor/{id:guid}"
+@using WorkoutTracker.Domain.Entities
+@using WorkoutTracker.Shared.Resources
+
+<RadzenTemplateForm TItem="RoutineEntity"
+                    Submit="@(Submit)"
+                    Data="@_model">
+    <RadzenStack Orientation="@Orientation.Vertical"
+                 AlignItems="AlignItems.Center"
+                 Style="height: 100%"
+                 JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenRow AlignItems="AlignItems.Center"
+                   RowGap="0.25rem"
+                   class="w-100 mb-2">
+            <RadzenColumn Size="1"
+                          class="rz-text-align-start rz-text-align-md-end">
+                <RadzenLabel>@Resource.Name:</RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn Size="8">
+                <RadzenTextBox @bind-Value="@_model.Name"
+                               Name="@nameof(_model.Name)"
+                               Style="display: block; width: 100%;"/>
+                <RadzenRequiredValidator Component="@nameof(_model.Name)"
+                                         Style="position: absolute"
+                                         Text="Required"/>
+            </RadzenColumn>
+            <RadzenColumn Size="3">
+                <RadzenButton Icon="check"
+                              ButtonStyle="ButtonStyle.Light"
+                              Variant="Variant.Flat"
+                              Size="ButtonSize.Medium"
+                              class="rz-my-1 rz-ms-1"/>
+                <RadzenButton Icon="close"
+                              ButtonStyle="ButtonStyle.Danger"
+                              Variant="Variant.Flat"
+                              Size="ButtonSize.Medium"
+                              Shade="Shade.Lighter" 
+                              class="rz-my-1 rz-ms-1"
+                              Click="@Close">
+                </RadzenButton>
+            </RadzenColumn>
+        </RadzenRow>
+        
+        <RadzenStack Style="width: 100%; overflow-y: auto; height: 20rem">
+            @foreach (var exercise in _model.RoutineExercises)
+            {
+                <RadzenRow Style="width: 100%"
+                           JustifyContent="JustifyContent.SpaceEvenly"
+                           Gap="0.5rem">
+                    <RadzenColumn Size="1">
+                        <div class="rz-border-radius-6">
+                            <RadzenText>@(_model.RoutineExercises.IndexOf(exercise) + 1)</RadzenText>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn Size="10">
+                        <RadzenDropDown TValue="ExerciseEntity"
+                                        Style="width: 100%"
+                                        Data="@_exercises"
+                                        @bind-Value="@exercise.Exercise">
+                            <Template Context="item">
+                                @($"{(item as ExerciseEntity)?.Name} ({(item as ExerciseEntity)?.Equipment?.Name})")
+                            </Template>
+                        </RadzenDropDown>
+                    </RadzenColumn>
+                    <RadzenColumn Size="1">
+                        <RadzenButton Icon="delete"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Variant="Variant.Flat"
+                                      Size="ButtonSize.Small"
+                                      Shade="Shade.Lighter" class="rz-my-1 rz-ms-1"
+                                      Click="@(() => Remove(exercise))"/>
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+        </RadzenStack>
+
+        <RadzenButton Icon="add"
+                      ButtonStyle="ButtonStyle.Primary"
+                      Variant="Variant.Flat"
+                      Size="ButtonSize.Medium"
+                      Click="@AddItem"/>
+        
+    </RadzenStack>
+</RadzenTemplateForm>

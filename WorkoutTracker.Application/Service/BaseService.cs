@@ -45,11 +45,14 @@ public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFa
     public async Task<List<T>> Get(Expression<Func<T, bool>>? predicate = null)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
-        if (predicate == null)
+        var query = context.Set<T>().AsQueryable();
+        if (predicate != null)
         {
-            return await context.Set<T>().Where(x => x.IsDeleted == false).OrderByDescending(x => x.DateUpdated).ToListAsync();
+            query = query.Where(predicate);
         }
-        return await context.Set<T>().Where(x => x.IsDeleted == false).Where(predicate).OrderByDescending(x => x.DateUpdated).ToListAsync();
+        query = query.Where(x => x.IsDeleted == false).OrderByDescending(x => x.DateUpdated);
+        var result = await query.ToListAsync();
+        return result;
     }
     
     public async Task<T?> Get(Guid id)

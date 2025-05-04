@@ -10,6 +10,8 @@ public class RoutineConfiguration : IEntityTypeConfiguration<RoutineEntity>
     {
         builder.ConfigureNamed("routine");
 
+        builder.Navigation(x => x.RoutineExercises).AutoInclude();
+        
         builder.HasMany(x => x.RoutineExercises)
             .WithOne(x => x.Routine)
             .HasForeignKey(x => x.RoutineId)

@@ -32,8 +32,14 @@ public partial class ExerciseList : ComponentBase
         new ColumnDescription<ExerciseEntity>()
         {
             Name = nameof(ExerciseEntity.MuscleGroup),
-            //Caption = Resource.,
+            Caption = Resource.MuscleGroup,
             Template = x => ((ExerciseEntity)x).MuscleGroup.GetEnumDescription()
+        },
+        new ColumnDescription<ExerciseEntity>()
+        {
+            Name = nameof(ExerciseEntity.Equipment.Name),
+            Caption = Resource.Equipments,
+            Template = x => ((ExerciseEntity)x).Equipment?.Name
         }
     };
 

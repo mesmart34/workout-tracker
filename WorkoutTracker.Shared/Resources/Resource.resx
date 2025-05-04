@@ -58,12 +58,15 @@
         <value>Cancel</value>
     </data>
     <data name="MuscleGroup" xml:space="preserve">
-        <value>MuscleGroup</value>
+        <value>Muscle Group</value>
     </data>
     <data name="Set" xml:space="preserve">
         <value>Set</value>
     </data>
     <data name="Sets" xml:space="preserve">
         <value>Sets</value>
+    </data>
+    <data name="Biceps" xml:space="preserve">
+        <value>Biceps</value>
     </data>
 </root>

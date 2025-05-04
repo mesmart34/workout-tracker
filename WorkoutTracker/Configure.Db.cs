@@ -29,11 +29,21 @@ public static class ConfigureDb
             await db.Equipments.AddRangeAsync(
                 new EquipmentEntity()
                 {
-                    Name = "Equipment 1"
+                    Name = "Highlets",
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
                 },
                 new EquipmentEntity()
                 {
-                    Name = "Equipment 2"
+                    Name = "Parallets",
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
+                },
+                new EquipmentEntity()
+                {
+                    Name = "Weighted vest",
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
                 });
             await db.SaveChangesAsync();
         }
@@ -45,7 +55,27 @@ public static class ConfigureDb
                     Name = "Pull ups",
                     Equipment = db.Equipments.First(),
                     ExerciseType = ExerciseType.Weight,
-                    MuscleGroup = MuscleGroup.Spine
+                    MuscleGroup = MuscleGroup.Spine,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
+                },
+                new ExerciseEntity()
+                {
+                    Name = "Chin ups",
+                    Equipment = db.Equipments.First(),
+                    ExerciseType = ExerciseType.Weight,
+                    MuscleGroup = MuscleGroup.Spine,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
+                },
+                new ExerciseEntity()
+                {
+                    Name = "Rows",
+                    Equipment = db.Equipments.First(),
+                    ExerciseType = ExerciseType.Weight,
+                    MuscleGroup = MuscleGroup.Spine,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
                 });
             await db.SaveChangesAsync();
         }
@@ -53,48 +83,80 @@ public static class ConfigureDb
         if (!db.Routines.Any())
         {
             await db.Routines.AddRangeAsync(new RoutineEntity()
-                {
-                    Name = "Routine 1"
-                });
-             await db.SaveChangesAsync();
+            {
+                Name = "Pull day",
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            });
+            await db.SaveChangesAsync();
         }
 
         if (!db.RoutineExercises.Any())
         {
-            await db.RoutineExercises.AddRangeAsync(new RoutineExerciseEntity()
-                {
-                    Exercise = db.Exercises.First(),
-                    Routine = db.Routines.First(),
-                    Notes = "lol kek",
-                    Order = 0
-                });
+            var exercises = await db.Exercises.ToListAsync();
+            var routineExercises = db.Exercises.ToList().Select(x => new RoutineExerciseEntity()
+            {
+                Exercise = x,
+                Notes = string.Empty,
+                Order = exercises.IndexOf(x),
+                Routine = db.Routines.FirstAsync().Result,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            });
+            await db.RoutineExercises.AddRangeAsync(routineExercises);
             await db.SaveChangesAsync();
         }
 
         if (!db.WorkoutSessions.Any())
         {
+            var routine = await db.Routines.FirstAsync();
             await db.WorkoutSessions.AddRangeAsync(new WorkoutSessionEntity()
             {
                 Mood = Mood.Ok,
                 Duration = TimeSpan.FromHours(1),
-                WorkoutDate =  DateTime.UtcNow.AddHours(-5)
+                WorkoutDate = DateTime.UtcNow.AddHours(-5),
+                Routine = routine,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
             });
             await db.SaveChangesAsync();
         }
 
         if (!db.Sets.Any())
         {
-            await db.Sets.AddRangeAsync(new SetEntity()
-            {
-                Exercise =  db.Exercises.First(),
-                Weight = 25,
-                Duration =  TimeSpan.FromMinutes(5),
-                Reps = 5,
-                WorkoutSession = db.WorkoutSessions.First()
-            });
+            var workout = await db.WorkoutSessions.FirstAsync();
+            var exercises = workout.Routine.RoutineExercises
+                .Select(x => x.Exercise)
+                .ToList();
+            var sets = exercises
+                .Where(x => x != null)
+                .SelectMany(x =>
+                new[]
+                {
+                    new SetEntity()
+                    {
+                        Duration = TimeSpan.FromMinutes(5),
+                        Reps = 14,
+                        Weight = 25,
+                        WorkoutSession = workout,
+                        Exercise = x!,
+                        DateCreated = DateTime.UtcNow,
+                        DateUpdated = DateTime.UtcNow
+                    },
+                    new SetEntity()
+                    {
+                        Duration = TimeSpan.FromMinutes(5),
+                        Reps = 9,
+                        Weight = 25,
+                        WorkoutSession = workout,
+                        Exercise = x!,
+                        DateCreated = DateTime.UtcNow,
+                        DateUpdated = DateTime.UtcNow
+                    }
+                }
+            ).ToList();
+            await db.Sets.AddRangeAsync(sets);
             await db.SaveChangesAsync();
         }
-
-        await db.SaveChangesAsync();
     }
 }

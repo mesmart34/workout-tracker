@@ -10,6 +10,7 @@ public class WorkoutSessionConfiguration : IEntityTypeConfiguration<WorkoutSessi
     {
         builder.Configure("workout_session");
         
+        builder.Navigation(x => x.Sets).AutoInclude();
         builder.HasMany(x => x.Sets)
             .WithOne(x => x.WorkoutSession)
             .HasForeignKey(x => x.WorkoutSessionId)
@@ -17,5 +18,11 @@ public class WorkoutSessionConfiguration : IEntityTypeConfiguration<WorkoutSessi
         
         builder.Property(x => x.Mood)
             .IsRequired();
+
+        builder.Navigation(x => x.Routine).AutoInclude();
+        builder.Property(x => x.RoutineId).IsRequired();
+        builder.HasOne(x => x.Routine)
+            .WithMany()
+            .HasForeignKey(x => x.RoutineId);
     }
 }

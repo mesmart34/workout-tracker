@@ -8,7 +8,7 @@ public sealed class WorkoutTrackerDbContext : DbContext
 {
     public WorkoutTrackerDbContext(DbContextOptions<WorkoutTrackerDbContext> contextOptions) : base(contextOptions)
     {
-        //Database.EnsureCreated();
+        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

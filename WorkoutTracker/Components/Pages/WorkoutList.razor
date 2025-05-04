@@ -1,0 +1,12 @@
+@page "/workouts"
+@using WorkoutTracker.Components.Shared
+@using WorkoutTracker.Domain.Entities
+
+<DataGrid T="WorkoutSessionEntity"
+          @ref="@_grid"
+          Service="WorkoutSessionService"
+          Columns="@_columns"
+          AddItemAction="@AddItem"
+          DeleteItemAction="@DeleteItem"
+          EditItemAction="@EditItem">
+</DataGrid>

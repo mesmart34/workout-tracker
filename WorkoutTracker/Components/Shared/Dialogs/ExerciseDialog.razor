@@ -40,6 +40,14 @@
                 </Template>
             </RadzenDropDown>
         </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="10">
+            <RadzenDropDown @bind-Value="@_model.Equipment"
+                            TValue="EquipmentEntity"
+                            TextProperty="@nameof(EquipmentEntity.Name)"
+                            Data="@_equipments"
+                            Style="width: 100%;">
+            </RadzenDropDown>
+        </RadzenColumn>
     </RadzenRow>
 
     <RadzenStack Orientation="@Orientation.Horizontal"

@@ -35,18 +35,18 @@ public partial class RoutineList : ComponentBase
 
     private async void AddItem()
     {
-        NavigationManager.NavigateTo("/routine/editor");
+        //NavigationManager.NavigateTo("/routine/editor");
         
-        // var item = new RoutineEntity();
-        // var result = await DialogService.OpenAsync<RoutineEditor>("Routine Editor", new Dictionary<string, object>()
-        // {
-        //     ["Model"] = item
-        // }, new DialogOptions());
-        // if (result == true)
-        // {
-        //     await RoutineService.Add(item);
-        //     await _grid.Reload();
-        // }
+        var item = new RoutineEntity();
+        var result = await DialogService.OpenAsync<RoutineDialog>("Routine Editor", new Dictionary<string, object>()
+        {
+            
+        }, new DialogOptions());
+        if (result == true)
+        {
+            await RoutineService.Add(item);
+            await _grid.Reload();
+        }
     }
 
     private async void DeleteItem(RoutineEntity item)
@@ -57,13 +57,13 @@ public partial class RoutineList : ComponentBase
 
     private async void EditItem(RoutineEntity item)
     {
-        var result = await DialogService.OpenAsync<RoutineEditor>("Routine Editor", new Dictionary<string, object>()
+        var result = await DialogService.OpenAsync<RoutineDialog>("Routine Editor", new Dictionary<string, object>()
         {
-            ["Model"] = item
-        });
+            ["Id"] = item.Id
+        }, new DialogOptions());
         if (result == true)
         {
-            await RoutineService.Update(item);
+            await RoutineService.Add(item);
             await _grid.Reload();
         }
     }
