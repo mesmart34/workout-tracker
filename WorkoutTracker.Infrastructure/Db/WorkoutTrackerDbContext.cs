@@ -8,7 +8,7 @@ public sealed class WorkoutTrackerDbContext : DbContext
 {
     public WorkoutTrackerDbContext(DbContextOptions<WorkoutTrackerDbContext> contextOptions) : base(contextOptions)
     {
-        Database.EnsureCreated();
+        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +22,8 @@ public sealed class WorkoutTrackerDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
+    public DbSet<UserEntity> Users { get; set; }
+    
     public DbSet<EquipmentEntity> Equipments { get; set; }
     
     public DbSet<ExerciseEntity> Exercises { get; set; }

@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="@Assets["WorkoutTracker.styles.css"]"/>
     <ImportMap/>
     <link rel="icon" type="image/png" href="favicon.png"/>
-    <HeadOutlet @rendermode="InteractiveServer"/>
-    <RadzenTheme Theme="software" @rendermode="InteractiveServer" />
+    <HeadOutlet @rendermode="new InteractiveAutoRenderMode(prerender: false)"/>
+    <RadzenTheme Theme="software" @rendermode="InteractiveAuto" />
 </head>
 
 <body>
-<Routes @rendermode="InteractiveServer"/>
+<Routes @rendermode="new InteractiveAutoRenderMode(prerender: false)"/>
 <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
 <script src="_framework/blazor.web.js"></script>
 </body>

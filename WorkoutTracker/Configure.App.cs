@@ -1,6 +1,9 @@
 using System.Resources;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using WorkoutTracker.Application.Contracts;
+using WorkoutTracker.Application.Service;
+using WorkoutTracker.Auth;
 using WorkoutTracker.Config;
 using WorkoutTracker.Infrastructure.Db;
 
@@ -13,6 +16,9 @@ public static class ConfigureApp
         AddConfig(builder);
         AddDb(builder);
         AddScrutor(builder.Services);
+        builder.Services.AddScoped<AuthService>();
+        builder.Services.AddScoped<UserContext>();
+        builder.Services.AddScoped<AuthenticationStateProvider, WorkoutTrackerAuthStateProvider>();
     }
 
     private static void AddDb(this WebApplicationBuilder builder)
@@ -27,8 +33,8 @@ public static class ConfigureApp
     
     private static void AddScrutor(this IServiceCollection services)
     {
-        services.Scan(scan => scan.FromAssemblies(typeof(IScopedService<>).Assembly)
-            .AddClasses(classes => classes.AssignableTo(typeof(IScopedService<>)))
+        services.Scan(scan => scan.FromAssemblies(typeof(IScopedService).Assembly)
+            .AddClasses(classes => classes.AssignableTo(typeof(IScopedService)))
             .AsSelfWithInterfaces()
             .WithScopedLifetime());
     }
@@ -44,6 +50,10 @@ public static class ConfigureApp
         config
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"{configurationsDirectory}/dbsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"{configurationsDirectory}/dbsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"{configurationsDirectory}/urls.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"{configurationsDirectory}/urls.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
             .AddJsonFile($"{configurationsDirectory}/dbsettings.json", optional: false, reloadOnChange: true)
             .AddEnvironmentVariables();
 

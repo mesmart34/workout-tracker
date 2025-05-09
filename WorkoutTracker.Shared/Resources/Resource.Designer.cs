@@ -193,5 +193,41 @@ namespace WorkoutTracker.Shared.Resources {
                 return ResourceManager.GetString("Biceps", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to LoginEmail.
+        /// </summary>
+        public static string LoginEmail {
+            get {
+                return ResourceManager.GetString("LoginEmail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to LoginPassword.
+        /// </summary>
+        public static string LoginPassword {
+            get {
+                return ResourceManager.GetString("LoginPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogOut.
+        /// </summary>
+        public static string LogOut {
+            get {
+                return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProfileSettings.
+        /// </summary>
+        public static string ProfileSettings {
+            get {
+                return ResourceManager.GetString("ProfileSettings", resourceCulture);
+            }
+        }
     }
 }

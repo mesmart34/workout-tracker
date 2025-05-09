@@ -2,7 +2,7 @@ using WorkoutTracker.Domain.Common;
 
 namespace WorkoutTracker.Domain.Entities;
 
-public class WorkoutSessionEntity : BaseEntity
+public class WorkoutSessionEntity : BaseEntity, IHasUser
 {
     public DateTime WorkoutDate { get; set; }
     
@@ -15,4 +15,7 @@ public class WorkoutSessionEntity : BaseEntity
     public Guid RoutineId { get; set; }
     public virtual RoutineEntity Routine { get; set; } = null!;
 
+    public Guid UserId { get; set; }
+
+    public UserEntity User { get; set; } = null!;
 }

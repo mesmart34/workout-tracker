@@ -11,7 +11,7 @@ public class DbSettings
 
     public string ConnectionString()
     {   
-        //return $"Host=db;Port=5432;Database=workout-tracker-db;Username=postgres;Password=postgres";
-        return $"Host={Endpoint};Port={Port};Database={Database};Username={Username};Password={Password};SslMode=Disable";
+        //return $"Host=localhost;Port=5432;Database=workout;Username=postgres;Password=postgres;SslMode=Disable";
+        return $"Host={Endpoint};Port={Port};Database={Database};Username={Username};Password={Password};SslMode=Disable;";
     }
 }

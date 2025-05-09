@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <EnvironmentName>Development</EnvironmentName>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,7 @@
 
     <ItemGroup>
       <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,16 +34,4 @@
       <ProjectReference Include="..\WorkoutTracker.Infrastructure\WorkoutTracker.Infrastructure.csproj" />
       <ProjectReference Include="..\WorkoutTracker.Shared\WorkoutTracker.Shared.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="aboba.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>aboba.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="aboba.Designer.cs" />
-    </ItemGroup>
-
 </Project>

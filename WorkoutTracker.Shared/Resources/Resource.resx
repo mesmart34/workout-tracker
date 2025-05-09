@@ -69,4 +69,22 @@
     <data name="Biceps" xml:space="preserve">
         <value>Biceps</value>
     </data>
+    <data name="LoginFirstName" xml:space="preserve">
+        <value>First name</value>
+    </data>
+    <data name="LoginSecondName" xml:space="preserve">
+        <value>Second Name</value>
+    </data>
+    <data name="LoginEmail" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="LoginPassword" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="LogOut" xml:space="preserve">
+        <value>Log out</value>
+    </data>
+    <data name="ProfileSettings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
 </root>

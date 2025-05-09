@@ -18,12 +18,28 @@ public static class ConfigureDb
         {
             await dbContext.Database.MigrateAsync();
         }
-
+        
         await dbContext.SeedData();
     }
 
     private static async Task SeedData(this WorkoutTrackerDbContext db)
     {
+        if (!db.Users.Any())
+        {
+            await db.Users.AddAsync(new UserEntity()
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                IsAdmin = true,
+                Email = "johndoe@gmail.com",
+                Password = "1234"
+            });
+            
+            await db.SaveChangesAsync();
+        }
+        
+        var user = await db.Users.FirstAsync();
+        
         if (!db.Equipments.Any())
         {
             await db.Equipments.AddRangeAsync(
@@ -31,19 +47,22 @@ public static class ConfigureDb
                 {
                     Name = "Highlets",
                     DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
+                    DateUpdated = DateTime.UtcNow,
+                    User = user,
                 },
                 new EquipmentEntity()
                 {
                     Name = "Parallets",
                     DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
+                    DateUpdated = DateTime.UtcNow,
+                    User = user,
                 },
                 new EquipmentEntity()
                 {
                     Name = "Weighted vest",
                     DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
+                    DateUpdated = DateTime.UtcNow,
+                    User = user,
                 });
             await db.SaveChangesAsync();
         }
@@ -57,7 +76,8 @@ public static class ConfigureDb
                     ExerciseType = ExerciseType.Weight,
                     MuscleGroup = MuscleGroup.Spine,
                     DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
+                    DateUpdated = DateTime.UtcNow,
+                    User = user,
                 },
                 new ExerciseEntity()
                 {
@@ -66,7 +86,8 @@ public static class ConfigureDb
                     ExerciseType = ExerciseType.Weight,
                     MuscleGroup = MuscleGroup.Spine,
                     DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
+                    DateUpdated = DateTime.UtcNow,
+                    User = user,
                 },
                 new ExerciseEntity()
                 {
@@ -75,7 +96,8 @@ public static class ConfigureDb
                     ExerciseType = ExerciseType.Weight,
                     MuscleGroup = MuscleGroup.Spine,
                     DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
+                    DateUpdated = DateTime.UtcNow,
+                    User = user,
                 });
             await db.SaveChangesAsync();
         }
@@ -86,7 +108,8 @@ public static class ConfigureDb
             {
                 Name = "Pull day",
                 DateCreated = DateTime.UtcNow,
-                DateUpdated = DateTime.UtcNow
+                DateUpdated = DateTime.UtcNow,
+                User = user,
             });
             await db.SaveChangesAsync();
         }
@@ -101,7 +124,8 @@ public static class ConfigureDb
                 Order = exercises.IndexOf(x),
                 Routine = db.Routines.FirstAsync().Result,
                 DateCreated = DateTime.UtcNow,
-                DateUpdated = DateTime.UtcNow
+                DateUpdated = DateTime.UtcNow,
+                User = user,
             });
             await db.RoutineExercises.AddRangeAsync(routineExercises);
             await db.SaveChangesAsync();
@@ -117,7 +141,8 @@ public static class ConfigureDb
                 WorkoutDate = DateTime.UtcNow.AddHours(-5),
                 Routine = routine,
                 DateCreated = DateTime.UtcNow,
-                DateUpdated = DateTime.UtcNow
+                DateUpdated = DateTime.UtcNow,
+                User = user,
             });
             await db.SaveChangesAsync();
         }
@@ -141,7 +166,8 @@ public static class ConfigureDb
                         WorkoutSession = workout,
                         Exercise = x!,
                         DateCreated = DateTime.UtcNow,
-                        DateUpdated = DateTime.UtcNow
+                        DateUpdated = DateTime.UtcNow,
+                        User = user,
                     },
                     new SetEntity()
                     {
@@ -151,7 +177,8 @@ public static class ConfigureDb
                         WorkoutSession = workout,
                         Exercise = x!,
                         DateCreated = DateTime.UtcNow,
-                        DateUpdated = DateTime.UtcNow
+                        DateUpdated = DateTime.UtcNow,
+                        User = user,
                     }
                 }
             ).ToList();

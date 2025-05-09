@@ -1,0 +1,7 @@
+{
+  "UrlSettings": {
+    "Urls": [
+      "http://*:5000"
+    ]
+  }
+}

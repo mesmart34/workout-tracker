@@ -1,0 +1,16 @@
+@using Microsoft.AspNetCore.Authorization
+@using WorkoutTracker.Common.Models
+@using WorkoutTracker.Shared.Resources
+@attribute [AllowAnonymous]
+@page "/login"
+
+
+<RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
+    <RadzenTemplateForm Data="@_loginModel" TItem="LoginModel">
+        <RadzenLogin AllowRegister="true" 
+                     AllowRememberMe="true" 
+                     Login="@(args => OnLogin(args))"
+                     UserText="@Resource.LoginEmail"
+                     PasswordText="@Resource.LoginPassword"/>
+    </RadzenTemplateForm>
+</RadzenCard>

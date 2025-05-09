@@ -6,7 +6,7 @@ using WorkoutTracker.Infrastructure.Db;
 
 namespace WorkoutTracker.Application.Service;
 
-public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFactory) : IScopedService<T>
+public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFactory) : IScopedService
     where T : BaseEntity
 {
     public async Task<T> Add(T entity)

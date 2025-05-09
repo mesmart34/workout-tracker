@@ -1,32 +1,71 @@
-﻿@using System.Resources
-@using WorkoutTracker.Shared.Resources
-@using WorkoutTracker.Components.Shared
+﻿@using WorkoutTracker.Shared.Resources
+@using Microsoft.AspNetCore.Components.Authorization
 @inherits LayoutComponentBase
 
 <div class="page">
     <RadzenDialog/>
     <main>
-        <RadzenLayout Style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
-            <RadzenHeader>
-                <RadzenStack Orientation=" Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
-                    <RadzenSidebarToggle Click="@(() => _sidebarExpanded = !_sidebarExpanded)"/>
-                    <RadzenLabel Text="@Resource.WorkoutTrackerTitle"/>
-                </RadzenStack>
-            </RadzenHeader>
-            <RadzenSidebar @bind-Expanded="@_sidebarExpanded">
-                <RadzenPanelMenu>
-                    <RadzenPanelMenuItem Text="@Resource.Equipments" Icon="fitness_center" Path="/"/>
-                    <RadzenPanelMenuItem Text="@Resource.Exercises" Icon="sports_gymnastics" Path="/exercises"/>
-                    <RadzenPanelMenuItem Text="@Resource.Routines" Icon="list_alt" Path="routines"/>
-                    <RadzenPanelMenuItem Text="Workout sessions" Icon="sports" Path="workouts"/>
-                </RadzenPanelMenu>
-            </RadzenSidebar>
-            <RadzenBody>
+        <AuthorizeView>
+            <Authorized>
+                <RadzenLayout Style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
+                    <RadzenHeader>
+                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+                            @* Title *@
+                            <RadzenStack Orientation=" Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+                                <RadzenSidebarToggle Click="@(() => _sidebarExpanded = !_sidebarExpanded)"/>
+                                <RadzenLabel Text="@Resource.WorkoutTrackerTitle"/>
+                            </RadzenStack>
+                            @* Profile *@
+                            <RadzenProfileMenu>
+                                <Template>
+                                    <RadzenStack Orientation="Orientation.Horizontal" 
+                                                 class="mx-1"
+                                                 AlignItems="AlignItems.Center">
+                                        <RadzenGravatar/>
+                                        <RadzenText TextStyle="TextStyle.Body1" Style="margin: 0px">@($"{UserContext.LastName} {UserContext.FirstName}")</RadzenText>
+                                    </RadzenStack>
+                                </Template>
+                                <ChildContent>
+                                    <RadzenPanelMenuItem>
+                                        <RadzenButton Text="@Resource.ProfileSettings"
+                                                      Style="width: 100%; text-align: left"
+                                                      Icon="logout"
+                                                      Click="@LogOut"/>
+                                    </RadzenPanelMenuItem>
+                                    <RadzenPanelMenuItem>
+                                        <RadzenButton Text="@Resource.LogOut"
+                                                      Style="width: 100%; text-align: left"
+                                                      Icon="logout"
+                                                      Click="@LogOut"/>
+                                    </RadzenPanelMenuItem>
+                                </ChildContent>
+                            </RadzenProfileMenu>
+                        </RadzenStack>
+                        
+                        
+                    </RadzenHeader>
+                    <RadzenSidebar @bind-Expanded="@_sidebarExpanded">
+                        <RadzenPanelMenu>
+                            <RadzenPanelMenuItem Text="@Resource.Equipments" Icon="fitness_center" Path="/equipments"/>
+                            <RadzenPanelMenuItem Text="@Resource.Exercises" Icon="sports_gymnastics" Path="/exercises"/>
+                            <RadzenPanelMenuItem Text="@Resource.Routines" Icon="list_alt" Path="routines"/>
+                            <RadzenPanelMenuItem Text="Workout sessions" Icon="sports" Path="workouts"/>
+                        </RadzenPanelMenu>
+                    </RadzenSidebar>
+                    <RadzenBody>
+                        <div class="rz-p-4">
+                            @Body
+                        </div>
+                    </RadzenBody>
+                </RadzenLayout>
+            </Authorized>
+            <NotAuthorized>
                 <div class="rz-p-4">
                     @Body
                 </div>
-            </RadzenBody>
-        </RadzenLayout>
+            </NotAuthorized>
+        </AuthorizeView>
+       
     </main>
 </div>
 
