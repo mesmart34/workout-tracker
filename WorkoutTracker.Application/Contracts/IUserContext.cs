@@ -1,9 +1,8 @@
-using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Domain.Entities;
 
-namespace WorkoutTracker.Auth;
+namespace WorkoutTracker.Application.Contracts;
 
-public class UserContext : IUserContext
+public interface IUserContext
 {
     public Guid Id { get; set; }
     

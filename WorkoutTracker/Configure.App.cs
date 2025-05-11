@@ -1,6 +1,8 @@
 using System.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
+using Radzen;
 using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Application.Service;
 using WorkoutTracker.Auth;
@@ -17,7 +19,9 @@ public static class ConfigureApp
         AddDb(builder);
         AddScrutor(builder.Services);
         builder.Services.AddScoped<AuthService>();
-        builder.Services.AddScoped<UserContext>();
+        builder.Services.AddRadzenComponents();
+        builder.Services.AddScoped<IUserContext, UserContext>();
+        builder.Services.AddScoped<ProtectedLocalStorage>();
         builder.Services.AddScoped<AuthenticationStateProvider, WorkoutTrackerAuthStateProvider>();
     }
 

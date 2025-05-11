@@ -229,5 +229,14 @@ namespace WorkoutTracker.Shared.Resources {
                 return ResourceManager.GetString("ProfileSettings", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required.
+        /// </summary>
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
     }
 }

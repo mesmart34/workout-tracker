@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Radzen;
 using WorkoutTracker;
 using WorkoutTracker.Components;
 using WorkoutTracker.Config;
@@ -9,9 +8,10 @@ using WorkoutTracker.Config;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddAntiforgery().AddRazorComponents()
-    .AddInteractiveServerComponents();
-builder.Services.AddRadzenComponents();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents();
+
 builder.Services.AddScoped<HttpClient>();
 var jwtToken = builder.Configuration.GetValue<string>("jwt:Token");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             throw new InvalidOperationException("JWT Token is missing.");
         }
     });
-
+builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Setup();
 
@@ -63,11 +63,12 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode();
 
 app.Run();

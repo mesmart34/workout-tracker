@@ -6,11 +6,92 @@
 
 
 <RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
-    <RadzenTemplateForm Data="@_loginModel" TItem="LoginModel">
-        <RadzenLogin AllowRegister="true" 
-                     AllowRememberMe="true" 
-                     Login="@(args => OnLogin(args))"
-                     UserText="@Resource.LoginEmail"
-                     PasswordText="@Resource.LoginPassword"/>
-    </RadzenTemplateForm>
+    @if (_signInMode)
+    {
+        <RadzenTemplateForm Data="@_loginModel" TItem="LoginModel">
+            <RadzenLogin AllowRegister="true"
+                         AllowRememberMe="true"
+                         Login="@(args => OnLogin(args))"
+                         UserText="@Resource.LoginEmail"
+                         PasswordText="@Resource.LoginPassword"
+                         Register="@ChangeMode"/>
+        </RadzenTemplateForm>
+    }
+    else
+    {
+        <RadzenTemplateForm Data="@_registerModel" 
+                            Submit="@SignUp"
+                            TItem="RegisterModel">
+            <RadzenRow Style="margin-bottom: 1.5rem">
+                <RadzenColumn Size="4">
+                    <RadzenLabel Component="@nameof(_registerModel.FirstName)"
+                                 class="h-50"
+                                 Text="First Name"/>
+                </RadzenColumn>
+                <RadzenColumn Size="8">
+                    <RadzenTextBox Name="@nameof(_registerModel.FirstName)"
+                                   class="w-100 d-block"
+                                   @bind-Value="@_registerModel.FirstName"/>
+                    <RadzenRequiredValidator Component="@nameof(_registerModel.FirstName)" 
+                                             class="position-absolute"
+                                             Text="@Resource.Required"/>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow Style="margin-bottom: 1.5rem">
+                <RadzenColumn Size="4">
+                    <RadzenLabel Component="@nameof(_registerModel.LastName)"
+                                 class="h-50"
+                                 Text="Last name"/>
+                </RadzenColumn>
+                <RadzenColumn Size="8">
+                    <RadzenTextBox Name="@nameof(_registerModel.LastName)"
+                                   class="w-100 d-block"
+                                   @bind-Value="@_registerModel.LastName"/>
+                    <RadzenRequiredValidator Component="@nameof(_registerModel.LastName)"
+                                             class="position-absolute"
+                                             Text="@Resource.Required"/>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow Style="margin-bottom: 1.5rem">
+                <RadzenColumn Size="4">
+                    <RadzenLabel Component="@nameof(_registerModel.Email)"
+                                 class="h-50"
+                                 Text="Email"/>
+                </RadzenColumn>
+                <RadzenColumn Size="8">
+                    <RadzenTextBox Name="@nameof(_registerModel.Email)"
+                                   class="w-100 d-block"
+                                   @bind-Value="@_registerModel.Email"/>
+                    <RadzenRequiredValidator Component="@nameof(_registerModel.Email)"
+                                             class="position-absolute"
+                                             Text="@Resource.Required"/>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow Style="margin-bottom: 1.5rem">
+                <RadzenColumn Size="4">
+                    <RadzenLabel Component="@nameof(_registerModel.Password)"
+                                 class="h-50"
+                                 Text="Password"/>
+                </RadzenColumn>
+                <RadzenColumn Size="8">
+                    <RadzenPassword Name="@nameof(_registerModel.Password)"
+                                    class="w-100 d-block"
+                                    @bind-Value="@_registerModel.Password"/>
+                    <RadzenRequiredValidator Component="@nameof(_registerModel.Password)"
+                                             class="position-absolute"
+                                             Text="@Resource.Required"/>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow Style="margin-bottom: 1.5rem">
+                <RadzenColumn Size="4"/>
+                <RadzenColumn Size="8">
+                    <RadzenButton Text="Sign up"
+                                  ButtonType="ButtonType.Submit"/>
+                    <RadzenButton Text="Cancel"
+                                  ButtonType="ButtonType.Reset"
+                                  ButtonStyle="ButtonStyle.Danger"/>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenTemplateForm>
+    }
 </RadzenCard>

@@ -4,8 +4,10 @@ using System.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.IdentityModel.Tokens;
+using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Application.Service;
 using WorkoutTracker.Auth.Requests;
+using WorkoutTracker.Common.Models;
 using WorkoutTracker.Domain.Entities;
 
 namespace WorkoutTracker.Auth;
@@ -15,10 +17,10 @@ public class AuthService
     private readonly UserService _userService;
     private readonly IConfiguration _configuration;
     private readonly ProtectedLocalStorage _protectedLocalStorage;
-    private readonly UserContext _userContext;
+    private readonly IUserContext _userContext;
     private const string UserClaim = "User";
 
-    public AuthService(UserService userService, IConfiguration configuration, ProtectedLocalStorage protectedLocalStorage, UserContext userContext)
+    public AuthService(UserService userService, IConfiguration configuration, ProtectedLocalStorage protectedLocalStorage, IUserContext userContext)
     {
         _userService = userService;
         _configuration = configuration;
@@ -43,11 +45,32 @@ public class AuthService
         
         return token;
     }
+    
+    public async Task<bool> Register(RegisterModel request)
+    {
+        var user = (await _userService.Get(x => x.Email == request.Email)).FirstOrDefault();
+        if (user != null)
+        {
+            return false;
+        }
+
+        await _userService.Add(new UserEntity()
+        {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Password = request.Password,
+            Email = request.Email,
+        });
+
+        return true;
+    }
 
     private void FillContext(UserEntity user)
     {
         _userContext.FirstName = user.FirstName;
         _userContext.LastName = user.LastName;
+        _userContext.User = user;
+        _userContext.Id = user.Id;
     }
 
     public async Task Logout()

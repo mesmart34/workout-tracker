@@ -1,9 +1,11 @@
 ﻿@using WorkoutTracker.Shared.Resources
 @using Microsoft.AspNetCore.Components.Authorization
+@using WorkoutTracker.Components.Shared
 @inherits LayoutComponentBase
-
+@rendermode InteractiveServer
 <div class="page">
     <RadzenDialog/>
+    <RadzenComponents @rendermode="InteractiveServer" />
     <main>
         <AuthorizeView>
             <Authorized>
@@ -26,18 +28,7 @@
                                     </RadzenStack>
                                 </Template>
                                 <ChildContent>
-                                    <RadzenPanelMenuItem>
-                                        <RadzenButton Text="@Resource.ProfileSettings"
-                                                      Style="width: 100%; text-align: left"
-                                                      Icon="logout"
-                                                      Click="@LogOut"/>
-                                    </RadzenPanelMenuItem>
-                                    <RadzenPanelMenuItem>
-                                        <RadzenButton Text="@Resource.LogOut"
-                                                      Style="width: 100%; text-align: left"
-                                                      Icon="logout"
-                                                      Click="@LogOut"/>
-                                    </RadzenPanelMenuItem>
+                                    <RadzenProfileMenuItem Text="@Resource.ProfileSettings" Icon="logout" Path="settings"></RadzenProfileMenuItem>
                                 </ChildContent>
                             </RadzenProfileMenu>
                         </RadzenStack>

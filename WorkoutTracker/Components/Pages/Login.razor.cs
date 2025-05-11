@@ -11,6 +11,8 @@ namespace WorkoutTracker.Components.Pages;
 public partial class Login : ComponentBase
 {
     private LoginModel _loginModel = new();
+    private RegisterModel _registerModel = new();
+    private bool _signInMode = true;
 
     [Inject] 
     private AuthService AuthService { get; set; } = null!;
@@ -36,5 +38,15 @@ public partial class Login : ComponentBase
             await ((WorkoutTrackerAuthStateProvider)AuthenticationStateProvider).MarkAsAuthenticated(token);
             NavigationManager.NavigateTo("/exercises");
         }
+    }
+
+    private async Task SignUp()
+    {
+        await AuthService.Register(_registerModel);
+    }
+
+    private void ChangeMode(object obj)
+    {
+        _signInMode = false;
     }
 }

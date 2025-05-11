@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
+using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Auth;
 using WorkoutTracker.Shared.Resources;
 
@@ -22,7 +23,7 @@ public partial class MainLayout
     private AuthenticationStateProvider AuthStateProvider { get; set; } = null!;
     
     [Inject] 
-    private UserContext UserContext { get; set; } = null!;
+    private IUserContext UserContext { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {

@@ -87,4 +87,7 @@
     <data name="ProfileSettings" xml:space="preserve">
         <value>Settings</value>
     </data>
+    <data name="RequiredValidator" xml:space="preserve">
+        <value>Required</value>
+    </data>
 </root>

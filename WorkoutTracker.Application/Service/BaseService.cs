@@ -1,12 +1,13 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using WorkoutTracker.Application.Contracts;
+using WorkoutTracker.Domain;
 using WorkoutTracker.Domain.Entities;
 using WorkoutTracker.Infrastructure.Db;
 
 namespace WorkoutTracker.Application.Service;
 
-public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFactory) : IScopedService
+public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFactory, IUserContext userContext) : IScopedService
     where T : BaseEntity
 {
     public async Task<T> Add(T entity)
@@ -15,6 +16,10 @@ public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFa
         entity.DateCreated = DateTime.UtcNow;
         entity.DateUpdated = DateTime.UtcNow;
         entity.IsDeleted = false;
+        if (typeof(T).IsAssignableTo(typeof(IHasUser)))
+        {
+            ((IHasUser)entity).User = userContext.User;
+        }
         await context.Set<T>().AddAsync(entity);
         await context.SaveChangesAsync();
         return entity;
@@ -27,7 +32,11 @@ public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFa
         {
             entity.DateCreated = DateTime.UtcNow;
             entity.DateUpdated = DateTime.UtcNow;
-            entity.IsDeleted = false;    
+            entity.IsDeleted = false; 
+            if (typeof(T).IsAssignableTo(typeof(IHasUser)))
+            {
+                ((IHasUser)entity).User = userContext.User;
+            }
         }
         
         await context.Set<T>().AddRangeAsync(entities);
@@ -50,6 +59,11 @@ public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFa
         {
             query = query.Where(predicate);
         }
+
+        if (typeof(T).IsAssignableTo(typeof(IHasUser)))
+        {
+            query = query.Where(x => ((IHasUser)x).UserId == userContext.Id);
+        }
         query = query.Where(x => x.IsDeleted == false).OrderByDescending(x => x.DateUpdated);
         var result = await query.ToListAsync();
         return result;
@@ -58,7 +72,12 @@ public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFa
     public async Task<T?> Get(Guid id)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
-        return await context.Set<T>().FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+        var query = context.Set<T>().AsQueryable();
+        if (typeof(T).IsAssignableTo(typeof(IHasUser)))
+        {
+            query = query.Where(x => ((IHasUser)x).UserId == userContext.Id);
+        }
+        return await query.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
     }
     
     public async Task Remove(T entity)

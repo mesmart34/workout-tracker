@@ -1,6 +1,6 @@
-namespace WorkoutTracker.Auth.Requests;
+namespace WorkoutTracker.Common.Models;
 
-public class RegisterRequest
+public class RegisterModel
 {
     public string Email { get; set; } = string.Empty;
     
