@@ -90,4 +90,19 @@
     <data name="RequiredValidator" xml:space="preserve">
         <value>Required</value>
     </data>
+    <data name="MoodPerfect" xml:space="preserve">
+        <value>Perfect</value>
+    </data>
+    <data name="MoodGood" xml:space="preserve">
+        <value>Good</value>
+    </data>
+    <data name="MoodOk" xml:space="preserve">
+        <value>Ok</value>
+    </data>
+    <data name="MoodBad" xml:space="preserve">
+        <value>Bad</value>
+    </data>
+    <data name="MoodTerrible" xml:space="preserve">
+        <value>Terrible</value>
+    </data>
 </root>

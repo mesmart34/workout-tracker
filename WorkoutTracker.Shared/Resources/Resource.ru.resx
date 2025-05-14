@@ -83,4 +83,19 @@
     <data name="RequiredValidator" xml:space="preserve">
         <value>Обязательно</value>
     </data>
+    <data name="MoodPerfect" xml:space="preserve">
+        <value>Отлично</value>
+    </data>
+    <data name="MoodGood" xml:space="preserve">
+        <value>Хорошо</value>
+    </data>
+    <data name="MoodTerrible" xml:space="preserve">
+        <value>Отвратительно</value>
+    </data>
+    <data name="MoodBad" xml:space="preserve">
+        <value>Плохо</value>
+    </data>
+    <data name="MoodOk" xml:space="preserve">
+        <value>Нормально</value>
+    </data>
 </root>

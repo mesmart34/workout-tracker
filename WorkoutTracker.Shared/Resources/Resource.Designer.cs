@@ -238,5 +238,50 @@ namespace WorkoutTracker.Shared.Resources {
                 return ResourceManager.GetString("Required", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OkMood.
+        /// </summary>
+        public static string OkMood {
+            get {
+                return ResourceManager.GetString("OkMood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MoodGood.
+        /// </summary>
+        public static string MoodGood {
+            get {
+                return ResourceManager.GetString("MoodGood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MoodTerrible.
+        /// </summary>
+        public static string MoodTerrible {
+            get {
+                return ResourceManager.GetString("MoodTerrible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MoodBad.
+        /// </summary>
+        public static string MoodBad {
+            get {
+                return ResourceManager.GetString("MoodBad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MoodPerfect.
+        /// </summary>
+        public static string MoodPerfect {
+            get {
+                return ResourceManager.GetString("MoodPerfect", resourceCulture);
+            }
+        }
     }
 }

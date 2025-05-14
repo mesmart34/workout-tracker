@@ -40,6 +40,12 @@
       - "5050:80"
     depends_on:
       - db
+  
+  workout-tracker.api:
+    image: workout-tracker.api
+    build:
+      context: .
+      dockerfile: WorkoutTracker.Api/Dockerfile
 
 networks:
   workout-tracker-net:

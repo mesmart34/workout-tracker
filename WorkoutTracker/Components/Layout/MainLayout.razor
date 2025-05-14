@@ -9,7 +9,7 @@
     <main>
         <AuthorizeView>
             <Authorized>
-                <RadzenLayout Style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
+                <RadzenLayout>
                     <RadzenHeader>
                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
                             @* Title *@
@@ -35,7 +35,7 @@
                         
                         
                     </RadzenHeader>
-                    <RadzenSidebar @bind-Expanded="@_sidebarExpanded">
+                    <RadzenSidebar @bind-Expanded="@_sidebarExpanded" Responsive="true">
                         <RadzenPanelMenu>
                             <RadzenPanelMenuItem Text="@Resource.Equipments" Icon="fitness_center" Path="/equipments"/>
                             <RadzenPanelMenuItem Text="@Resource.Exercises" Icon="sports_gymnastics" Path="/exercises"/>
@@ -44,11 +44,15 @@
                         </RadzenPanelMenu>
                     </RadzenSidebar>
                     <RadzenBody>
-                        <div class="rz-p-4">
-                            @Body
+                        <div class="rz-p-4 row">
+                            <div class="col-3 d-none d-md-block"></div>
+                            <div class="col-12 col-lg-6">
+                                @Body
+                            </div>
+                            <div class="col-3 d-none d-md-block"></div>
                         </div>
                     </RadzenBody>
-                </RadzenLayout>
+                </RadzenLayout> 
             </Authorized>
             <NotAuthorized>
                 <div class="rz-p-4">
