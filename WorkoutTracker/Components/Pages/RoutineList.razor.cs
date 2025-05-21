@@ -16,8 +16,8 @@ public partial class RoutineList : ComponentBase
     {
         new ColumnDescription<RoutineEntity>()
         {
-            Name = nameof(RoutineEntity.Name),
-            Caption = "Name"
+            Caption = nameof(RoutineEntity.Name),
+            Template = x => (x as  RoutineEntity)?.Name,
         }
     };
 

@@ -114,7 +114,7 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     workout_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    duration = table.Column<TimeSpan>(type: "interval", nullable: true),
+                    duration = table.Column<TimeSpan>(type: "interval", nullable: false),
                     mood = table.Column<int>(type: "integer", nullable: false),
                     routine_id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -177,12 +177,47 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "set",
+                name: "workout_session_exercise",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     workout_session_id = table.Column<Guid>(type: "uuid", nullable: false),
                     exercise_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    order = table.Column<int>(type: "integer", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    date_created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    date_updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_workout_session_exercise", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_workout_session_exercise_exercise_exercise_id",
+                        column: x => x.exercise_id,
+                        principalTable: "exercise",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_workout_session_exercise_user_user_id",
+                        column: x => x.user_id,
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_workout_session_exercise_workout_session_workout_session_id",
+                        column: x => x.workout_session_id,
+                        principalTable: "workout_session",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "set",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    workout_session_exercise_id = table.Column<Guid>(type: "uuid", nullable: false),
                     reps = table.Column<int>(type: "integer", nullable: false),
                     weight = table.Column<float>(type: "real", nullable: false),
                     duration = table.Column<TimeSpan>(type: "interval", nullable: true),
@@ -195,21 +230,15 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                 {
                     table.PrimaryKey("pk_set", x => x.id);
                     table.ForeignKey(
-                        name: "fk_set_exercise_exercise_id",
-                        column: x => x.exercise_id,
-                        principalTable: "exercise",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
                         name: "fk_set_users_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_set_workout_sessions_workout_session_id",
-                        column: x => x.workout_session_id,
-                        principalTable: "workout_session",
+                        name: "fk_set_workout_sessions_exercises_workout_session_exercise_id",
+                        column: x => x.workout_session_exercise_id,
+                        principalTable: "workout_session_exercise",
                         principalColumn: "id",
                         onDelete: ReferentialAction.SetNull);
                 });
@@ -250,19 +279,14 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_set_exercise_id",
-                table: "set",
-                column: "exercise_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_set_user_id",
                 table: "set",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_set_workout_session_id",
+                name: "ix_set_workout_session_exercise_id",
                 table: "set",
-                column: "workout_session_id");
+                column: "workout_session_exercise_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_workout_session_routine_id",
@@ -273,6 +297,21 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                 name: "ix_workout_session_user_id",
                 table: "workout_session",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_workout_session_exercise_exercise_id",
+                table: "workout_session_exercise",
+                column: "exercise_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_workout_session_exercise_user_id",
+                table: "workout_session_exercise",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_workout_session_exercise_workout_session_id",
+                table: "workout_session_exercise",
+                column: "workout_session_id");
         }
 
         /// <inheritdoc />
@@ -283,6 +322,9 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
 
             migrationBuilder.DropTable(
                 name: "set");
+
+            migrationBuilder.DropTable(
+                name: "workout_session_exercise");
 
             migrationBuilder.DropTable(
                 name: "exercise");

@@ -12,8 +12,8 @@ using WorkoutTracker.Infrastructure.Db;
 namespace WorkoutTracker.Infrastructure.Db.Migrations
 {
     [DbContext(typeof(WorkoutTrackerDbContext))]
-    [Migration("20250508082103_Init")]
-    partial class Init
+    [Migration("20250515084840_AddedOrderToSet")]
+    partial class AddedOrderToSet
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,13 +232,13 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .HasColumnType("interval")
                         .HasColumnName("duration");
 
-                    b.Property<Guid>("ExerciseId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("exercise_id");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
 
                     b.Property<int>("Reps")
                         .HasColumnType("integer")
@@ -252,21 +252,18 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .HasColumnType("real")
                         .HasColumnName("weight");
 
-                    b.Property<Guid>("WorkoutSessionId")
+                    b.Property<Guid>("WorkoutSessionExerciseId")
                         .HasColumnType("uuid")
-                        .HasColumnName("workout_session_id");
+                        .HasColumnName("workout_session_exercise_id");
 
                     b.HasKey("Id")
                         .HasName("pk_set");
 
-                    b.HasIndex("ExerciseId")
-                        .HasDatabaseName("ix_set_exercise_id");
-
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_set_user_id");
 
-                    b.HasIndex("WorkoutSessionId")
-                        .HasDatabaseName("ix_set_workout_session_id");
+                    b.HasIndex("WorkoutSessionExerciseId")
+                        .HasDatabaseName("ix_set_workout_session_exercise_id");
 
                     b.ToTable("set", (string)null);
                 });
@@ -337,7 +334,7 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_updated");
 
-                    b.Property<TimeSpan?>("Duration")
+                    b.Property<TimeSpan>("Duration")
                         .HasColumnType("interval")
                         .HasColumnName("duration");
 
@@ -371,6 +368,57 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .HasDatabaseName("ix_workout_session_user_id");
 
                     b.ToTable("workout_session", (string)null);
+                });
+
+            modelBuilder.Entity("WorkoutTracker.Domain.Entities.WorkoutSessionExerciseEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_created");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_updated");
+
+                    b.Property<Guid>("ExerciseId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("exercise_id");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<Guid>("WorkoutSessionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("workout_session_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_workout_session_exercise");
+
+                    b.HasIndex("ExerciseId")
+                        .HasDatabaseName("ix_workout_session_exercise_exercise_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_workout_session_exercise_user_id");
+
+                    b.HasIndex("WorkoutSessionId")
+                        .HasDatabaseName("ix_workout_session_exercise_workout_session_id");
+
+                    b.ToTable("workout_session_exercise", (string)null);
                 });
 
             modelBuilder.Entity("WorkoutTracker.Domain.Entities.EquipmentEntity", b =>
@@ -447,13 +495,6 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
 
             modelBuilder.Entity("WorkoutTracker.Domain.Entities.SetEntity", b =>
                 {
-                    b.HasOne("WorkoutTracker.Domain.Entities.ExerciseEntity", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired()
-                        .HasConstraintName("fk_set_exercise_exercise_id");
-
                     b.HasOne("WorkoutTracker.Domain.Entities.UserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -461,18 +502,16 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_set_users_user_id");
 
-                    b.HasOne("WorkoutTracker.Domain.Entities.WorkoutSessionEntity", "WorkoutSession")
+                    b.HasOne("WorkoutTracker.Domain.Entities.WorkoutSessionExerciseEntity", "WorkoutSessionExerciseEntity")
                         .WithMany("Sets")
-                        .HasForeignKey("WorkoutSessionId")
+                        .HasForeignKey("WorkoutSessionExerciseId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired()
-                        .HasConstraintName("fk_set_workout_sessions_workout_session_id");
-
-                    b.Navigation("Exercise");
+                        .HasConstraintName("fk_set_workout_sessions_exercises_workout_session_exercise_id");
 
                     b.Navigation("User");
 
-                    b.Navigation("WorkoutSession");
+                    b.Navigation("WorkoutSessionExerciseEntity");
                 });
 
             modelBuilder.Entity("WorkoutTracker.Domain.Entities.WorkoutSessionEntity", b =>
@@ -496,6 +535,36 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WorkoutTracker.Domain.Entities.WorkoutSessionExerciseEntity", b =>
+                {
+                    b.HasOne("WorkoutTracker.Domain.Entities.ExerciseEntity", "Exercise")
+                        .WithMany()
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_workout_session_exercise_exercise_exercise_id");
+
+                    b.HasOne("WorkoutTracker.Domain.Entities.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_workout_session_exercise_user_user_id");
+
+                    b.HasOne("WorkoutTracker.Domain.Entities.WorkoutSessionEntity", "WorkoutSession")
+                        .WithMany("Exercises")
+                        .HasForeignKey("WorkoutSessionId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("fk_workout_session_exercise_workout_session_workout_session_id");
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("User");
+
+                    b.Navigation("WorkoutSession");
+                });
+
             modelBuilder.Entity("WorkoutTracker.Domain.Entities.ExerciseEntity", b =>
                 {
                     b.Navigation("RoutineExercises");
@@ -507,6 +576,11 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                 });
 
             modelBuilder.Entity("WorkoutTracker.Domain.Entities.WorkoutSessionEntity", b =>
+                {
+                    b.Navigation("Exercises");
+                });
+
+            modelBuilder.Entity("WorkoutTracker.Domain.Entities.WorkoutSessionExerciseEntity", b =>
                 {
                     b.Navigation("Sets");
                 });

@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Domain;
@@ -48,6 +49,24 @@ public class BaseService<T>(IDbContextFactory<WorkoutTrackerDbContext> contextFa
         await using var context = await contextFactory.CreateDbContextAsync();
         entity.DateUpdated = DateTime.UtcNow;
         context.Set<T>().Update(entity);
+        var type = typeof(T);
+        var properties = type.GetProperties();
+        foreach (var property in properties)
+        {
+            var accessor = type.GetProperty(property.Name)?.GetGetMethod();
+            if (accessor?.IsVirtual != true)
+            {
+                continue;
+            }
+            var value = property.Name;
+            var prop = type.GetProperty(value);
+            context.Entry(entity).Property(value).IsModified = false;
+            // var value = property.GetValue(entity);
+            // if (value != null)
+            // {
+            //     context.Entry(value).State = EntityState.Detached;
+            // }
+        }
         await context.SaveChangesAsync();
     }
     

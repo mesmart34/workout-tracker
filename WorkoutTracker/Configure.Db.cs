@@ -147,42 +147,57 @@ public static class ConfigureDb
             await db.SaveChangesAsync();
         }
 
-        if (!db.Sets.Any())
+        if (!db.WorkoutSessionsExercises.Any())
         {
-            var workout = await db.WorkoutSessions.FirstAsync();
-            var exercises = workout.Routine.RoutineExercises
+            var routine = await db.Routines.FirstAsync();
+            var routineExerciseEntities = routine.RoutineExercises.ToList();
+            var exercises = routineExerciseEntities
                 .Select(x => x.Exercise)
                 .ToList();
-            var sets = exercises
-                .Where(x => x != null)
-                .SelectMany(x =>
-                new[]
+            var workoutSession = await db.WorkoutSessions.FirstOrDefaultAsync();
+            await db.WorkoutSessionsExercises.AddRangeAsync(new []
+            {
+                new WorkoutSessionExerciseEntity()
                 {
-                    new SetEntity()
-                    {
-                        Duration = TimeSpan.FromMinutes(5),
-                        Reps = 14,
-                        Weight = 25,
-                        WorkoutSession = workout,
-                        Exercise = x!,
-                        DateCreated = DateTime.UtcNow,
-                        DateUpdated = DateTime.UtcNow,
-                        User = user,
-                    },
-                    new SetEntity()
-                    {
-                        Duration = TimeSpan.FromMinutes(5),
-                        Reps = 9,
-                        Weight = 25,
-                        WorkoutSession = workout,
-                        Exercise = x!,
-                        DateCreated = DateTime.UtcNow,
-                        DateUpdated = DateTime.UtcNow,
-                        User = user,
-                    }
+                    Exercise = exercises.First()!,
+                    WorkoutSession = workoutSession!,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                    User = user,
+                    Order = 0,
+                    Sets = new()
                 }
-            ).ToList();
-            await db.Sets.AddRangeAsync(sets);
+            });
+            await db.SaveChangesAsync();
+        }
+
+        if (!db.Sets.Any())
+        {
+            var workoutSessionExercise = await db.WorkoutSessionsExercises.FirstAsync();
+
+            await db.Sets.AddRangeAsync(new[]
+            {
+                new SetEntity()
+                {
+                    Duration = TimeSpan.FromMinutes(5),
+                    Reps = 14,
+                    Weight = 25,
+                    WorkoutSessionExerciseEntity = workoutSessionExercise!,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                    User = user
+                },
+                new SetEntity()
+                {
+                    Duration = TimeSpan.FromMinutes(5),
+                    Reps = 9,
+                    Weight = 25,
+                    WorkoutSessionExerciseEntity = workoutSessionExercise!,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                    User = user
+                }
+            });
             await db.SaveChangesAsync();
         }
     }

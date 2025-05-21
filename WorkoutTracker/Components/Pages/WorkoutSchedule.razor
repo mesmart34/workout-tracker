@@ -1,0 +1,15 @@
+@page "/workout-schedule"
+@using WorkoutTracker.Common
+
+<RadzenScheduler @ref="@_scheduler" 
+                 TItem="WorkoutSessionAppointment" 
+                 Data="@_appointments"
+                 ShowHeader="true"
+                 StartProperty="@nameof(WorkoutSessionAppointment.Start)" 
+                 EndProperty="@nameof(WorkoutSessionAppointment.End)"
+                 AppointmentSelect="@OnSlotSelect"
+                 TextProperty="@nameof(WorkoutSessionAppointment.WorkoutName)" SelectedIndex="2">
+    <RadzenDayView />
+    <RadzenWeekView />
+    <RadzenMonthView />
+</RadzenScheduler>

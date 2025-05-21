@@ -17,17 +17,12 @@ public partial class WorkoutList : ComponentBase
         new ColumnDescription<WorkoutSessionEntity>()
         {
             Caption = nameof(WorkoutSessionEntity.Routine.Name),
-            Template = x => ((WorkoutSessionEntity)x).Routine.Name
+            Template = x => ((WorkoutSessionEntity)x).Routine?.Name
         },
         new ColumnDescription<WorkoutSessionEntity>()
         {
             Caption = nameof(WorkoutSessionEntity.WorkoutDate),
             Template = x => ((WorkoutSessionEntity)x).WorkoutDate.ToString("dd/MM/yyyy")
-        },
-        new ColumnDescription<WorkoutSessionEntity>()
-        {
-            Caption = nameof(WorkoutSessionEntity.Duration),
-            Template = x => ((WorkoutSessionEntity)x).Duration.ToString()
         }
     };
 
@@ -45,17 +40,17 @@ public partial class WorkoutList : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async void AddItem()
+    private void AddItem()
     {
         NavigationManager.NavigateTo("/workouts/editor");
     }
 
-    private async void DeleteItem(WorkoutSessionEntity item)
+    private void DeleteItem(WorkoutSessionEntity item)
     {
         
     }
 
-    private async void EditItem(WorkoutSessionEntity item)
+    private void EditItem(WorkoutSessionEntity item)
     {
         NavigationManager.NavigateTo($"/workouts/editor/{item.Id}");
     }

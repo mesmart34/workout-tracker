@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WorkoutTracker.Infrastructure.Db;
@@ -11,9 +12,11 @@ using WorkoutTracker.Infrastructure.Db;
 namespace WorkoutTracker.Infrastructure.Db.Migrations
 {
     [DbContext(typeof(WorkoutTrackerDbContext))]
-    partial class WorkoutTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515084400_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,10 +236,6 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("integer")
-                        .HasColumnName("order");
-
                     b.Property<int>("Reps")
                         .HasColumnType("integer")
                         .HasColumnName("reps");
@@ -323,10 +322,6 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<bool>("Complete")
-                        .HasColumnType("boolean")
-                        .HasColumnName("complete");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_created");
@@ -346,11 +341,6 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                     b.Property<int>("Mood")
                         .HasColumnType("integer")
                         .HasColumnName("mood");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
 
                     b.Property<Guid>("RoutineId")
                         .HasColumnType("uuid")

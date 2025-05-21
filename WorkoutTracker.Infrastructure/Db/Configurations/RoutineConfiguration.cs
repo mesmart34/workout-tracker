@@ -9,8 +9,6 @@ public class RoutineConfiguration : IEntityTypeConfiguration<RoutineEntity>
     public void Configure(EntityTypeBuilder<RoutineEntity> builder)
     {
         builder.ConfigureNamed("routine");
-
-        builder.Navigation(x => x.RoutineExercises).AutoInclude();
         
         builder.HasMany(x => x.RoutineExercises)
             .WithOne(x => x.Routine)

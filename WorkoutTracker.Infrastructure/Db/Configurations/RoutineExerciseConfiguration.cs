@@ -15,13 +15,13 @@ public class RoutineExerciseConfiguration : IEntityTypeConfiguration<RoutineExer
         builder.Property(x => x.RoutineId)
             .IsRequired();
         
-        builder.Navigation(x => x.Routine).AutoInclude();
+        builder.Property(x => x.RoutineId).IsRequired();
         builder.HasOne(x => x.Routine)
             .WithMany(x => x.RoutineExercises)
             .HasForeignKey(x => x.RoutineId)
             .OnDelete(DeleteBehavior.SetNull);
         
-        builder.Navigation(x => x.Exercise).AutoInclude();
+        builder.Property(x => x.ExerciseId).IsRequired();
         builder.HasOne(x => x.Exercise)
             .WithMany(x => x.RoutineExercises)
             .HasForeignKey(x => x.ExerciseId);

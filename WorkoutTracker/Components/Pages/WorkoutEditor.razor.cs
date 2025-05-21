@@ -1,98 +1,107 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Radzen;
 using Radzen.Blazor;
 using WorkoutTracker.Application.Service;
-using WorkoutTracker.Domain.Common;
+using WorkoutTracker.Components.Shared;
 using WorkoutTracker.Domain.Entities;
 
 namespace WorkoutTracker.Components.Pages;
 
 public partial class WorkoutEditor : ComponentBase
 {
-    private WorkoutSessionEntity _model = new();
     private List<RoutineEntity> _routines = new();
+    private WorkoutSessionEntity _model = new();
     private RadzenSteps _steps = new();
-    private bool _canChange;
-    private bool _trackMode = false;
-    private int _stepIndex = 0;
-    private IEnumerable<Enum>? _moods;
-    private RoutineExerciseEntity? _currentExercise = null;
-    private bool _showButtons = true;
-
+    private bool _opened = false;
+    private Dictionary<WorkoutSessionExerciseEntity, WorkoutExerciseEditor> _workoutExerciseEditors = new();
+    
     [Parameter]
     public Guid? Id { get; set; }
-
+    
     [Inject] 
     private WorkoutSessionService WorkoutSessionService { get; set; } = null!;
-
+    
+    [Inject] 
+    private DialogService DialogService { get; set; } = null!;
+    
     [Inject] 
     public RoutineService RoutineService { get; set; } = null!;
-
+    
     protected override async Task OnInitializedAsync()
     {
-        _moods = Enum.GetValues<Mood>().Cast<Enum>();
-        if (Id != null)
-        {
-            _model = await WorkoutSessionService.Get(Id.Value) ?? new();
-            _stepIndex = 1;
-        }
-        else
-        {
-            _model.WorkoutDate = DateTime.Now;
-            _model.Mood = Mood.Ok;
-            
-        }
         _routines = await RoutineService.Get();
+        if (Id.HasValue && Id != Guid.Empty)
+        {
+            _model = await WorkoutSessionService.Get(Id.Value) ?? new(); 
+        }
+
+        foreach (var workoutSessionExerciseEntity in _model.Exercises)
+        {
+            _workoutExerciseEditors.Add(workoutSessionExerciseEntity, new WorkoutExerciseEditor());
+        }
+        
         await base.OnInitializedAsync();
     }
 
-    private void RoutineChanged(object value)
+    private void LoadModel()
     {
-        _canChange = true;
-    }
-    
-    private void OnStepChange(int step)
-    {
-        
-    }
-
-    private void StepChange(StepsCanChangeEventArgs arg)
-    {
-        if (!_canChange)
+        if (_model.Exercises.Count != 0 || _model.Routine?.RoutineExercises == null)
         {
-            arg.PreventDefault();
+            return;
+        }
+        
+        _model.Duration = TimeSpan.FromHours(1);
+        _model.WorkoutDate = DateTime.UtcNow;
+        foreach (var routineExercise in _model.Routine.RoutineExercises)
+        {
+            if (routineExercise.Exercise == null || !routineExercise.ExerciseId.HasValue)
+            {
+                continue;
+            }
+
+            _model.Exercises.Add(new WorkoutSessionExerciseEntity()
+            {
+                Exercise = routineExercise.Exercise,
+                ExerciseId = routineExercise.ExerciseId.Value,
+                Order = routineExercise.Order,
+                WorkoutSession = _model,
+                Sets = new()
+                {
+                    new SetEntity()
+                    {
+                        Order = 0
+                    }
+                }
+            });
         }
     }
 
-    private void ChangeMode(RoutineExerciseEntity routineExercise)
+    private void StepChanged()
     {
-        _trackMode = true;
-        _showButtons = false;
-        _currentExercise = routineExercise;
+        if (!_model.Complete)
+        {
+            LoadModel();
+        }
     }
 
-    private void AddSet()
+    private async Task Complete(MouseEventArgs arg)
     {
-        // if (_selectedExercise?.Exercise != null)
-        // {
-        //     _selectedWorkout?.Sets.Add(new()
-        //     {
-        //         Exercise = _selectedExercise.Exercise,
-        //         ExerciseId = _selectedExercise.ExerciseId.Value
-        //     });
-        // }
-    }
+        _model.Complete = true;
 
-    private void RemoveLastSet()
-    {
-        // _selectedWorkout?.Sets.RemoveAt(_selectedWorkout.Sets.Count - 1);
-    }
-
-    private void Back()
-    {
-        _trackMode = false;
-        _showButtons = true;
-        _currentExercise = null;
+        if (_model.Id == Guid.Empty)
+        {
+            _model = await WorkoutSessionService.Add(_model);
+        }
+        else
+        {
+            await WorkoutSessionService.Update(_model);
+        }
+        
+        foreach (var workoutExerciseEditor in _workoutExerciseEditors)
+        {
+            workoutExerciseEditor.Value?.Save();
+        }
+        
     }
 }

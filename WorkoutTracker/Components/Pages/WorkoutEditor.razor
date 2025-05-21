@@ -1,172 +1,80 @@
 @page "/workouts/editor/{id:guid}"
 @page "/workouts/editor/"
-@using Microsoft.CodeAnalysis.Operations
-@using WorkoutTracker.Application.Utils
+
 @using WorkoutTracker.Domain.Entities
+@using WorkoutTracker.Shared.Resources
 @using WorkoutTracker.Components.Shared
-@using WorkoutTracker.Domain.Common
 
 <style>
     .rz-panel-titlebar {
         flex-direction: row-reverse;
-        justify-content:left;
+        justify-content: left;
+    }
+
+    .rz-steps-item {
+        display: none;
+    }
+
+    .shadows div {
+        padding: 1rem;
+        width: 10rem;
+        text-align: center;
+    }
+
+    .exercise-panel {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .rz-steps .rz-widget-content {
+        overflow: auto;
+        height: 100%;
     }
 </style>
 
-<RadzenSteps class="h-100"
-             Change="@OnStepChange"
-             @ref="@_steps"
-             CanChange="@StepChange"
-             @bind-SelectedIndex="@_stepIndex"
-             ShowStepsButtons="@_showButtons"
-             AllowStepSelect="false">
+<RadzenSteps SelectedIndexChanged="@StepChanged" @ref="@_steps">
     <Steps>
-        <RadzenStepsItem Text="Choose a routine">
-            <RadzenStack Orientation="Orientation.Vertical"
-                         class="h-100">
-                <RadzenText Text="Routines"
-                            TextStyle="TextStyle.H3"/>
-                <RadzenListBox class="h-100"
-                               TValue="RoutineEntity"
-                               AllowFiltering="true"
-                               Data="@_routines"
-                               @bind-Value="@_model.Routine"
-                               SelectedItemChanged="@RoutineChanged">
-                    <Template Context="item">
-                        <div @ondblclick="@(() => _steps.NextStep())">
-                            @((item as RoutineEntity)?.Name)
-                        </div>
-                    </Template>
-                </RadzenListBox>
-            </RadzenStack>
+        <RadzenStepsItem>
+            <RadzenText Text="Routine" TextStyle="TextStyle.H3"/>
+            <hr/>
+            <div class="overflow-auto" style="height: calc(100vh - 14rem)">
+                <div class="p-2">
+                <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                TValue="RoutineEntity"
+                                Disabled="@_model.Complete"
+                                Change="@(() => StepChanged())"
+                                FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                Data=@_routines TextProperty="@nameof(RoutineEntity.Name)" AllowClear="true"
+                                @bind-Value="@_model.Routine" class="w-100 my-2 rz-border-radius-1" Style="height: 2.5rem"/>
+                </div>
+                @foreach (var exercise in _model.Exercises.OrderBy(x => x.Order))
+                {
+                    <WorkoutExerciseEditor @ref="@_workoutExerciseEditors[exercise]" Model="@exercise"/>
+                }
+            </div>
         </RadzenStepsItem>
-        <RadzenStepsItem Text="Track your progress">
-            <RadzenStack Orientation="Orientation.Vertical">
-                <RadzenText Text="@_model.Routine.Name"
-                                TextStyle="TextStyle.H3"/>
-                    @foreach (var routineExercise in _model.Routine.RoutineExercises.OrderBy(x => x.Order))
-                    {
-                        <RadzenPanel AllowCollapse="true">
-                            <ChildContent>
-                                @if (_model?.Sets != null)
-                                {
-                                    <RadzenStack Orientation="Orientation.Vertical"
-                                                 Gap="1rem">
-                                        @foreach (var set in _model.Sets.Where(x => x.ExerciseId == _currentExercise?.ExerciseId))
-                                        {
-                                            <RadzenRow>
-                                                <RadzenColumn Size="12" SizeLG="6">
-                                                    <RadzenStack Orientation="Orientation.Vertical"
-                                                                 AlignItems="AlignItems.Start"
-                                                                 Gap="0.25rem">
-                                                        <RadzenLabel Text="Reps"/>
-                                                        <RadzenNumeric TValue="int"
-                                                                       class="w-100"
-                                                                       @bind-Value="@set.Reps"/>
-                                                    </RadzenStack>
-                                                </RadzenColumn>
-                                                <RadzenColumn Size="12" SizeLG="6">
-                                                    <RadzenStack Orientation="Orientation.Vertical"
-                                                                 AlignItems="AlignItems.Start"
-                                                                 Gap="0.25rem">
-                                                        @switch (set.Exercise.ExerciseType)
-                                                        {
-                                                            case ExerciseType.Weight:
-                                                                <RadzenLabel Text="Weight"/>
-                                                                <RadzenNumeric Placeholder="Weight"
-                                                                               TValue="float"
-                                                                               class="w-100"
-                                                                               @bind-Value="@set.Weight"/>
-                                                                break;
-                                                            case ExerciseType.Time:
-                                                                <RadzenLabel Text="Duration"/>
-                                                                <RadzenDatePicker Placeholder="Duration"
-                                                                                  TimeOnly="true"
-                                                                                  class="w-100"
-                                                                                  @bind-Value="@set.Duration"/>
-                                                                break;
-                                                        }
-
-                                                    </RadzenStack>
-                                                </RadzenColumn>
-                                            </RadzenRow>
-                                            if (_model.Sets.IndexOf(set) < _model.Sets.Count - 1)
-                                            {
-                                                <hr class="mt-0 mb-0"/>
-                                            }
-                                        }
-                                        <RadzenStack Orientation="Orientation.Horizontal"
-                                                     JustifyContent="JustifyContent.Center">
-                                            <RadzenButton Variant="Variant.Text"
-                                                          Style="width: 5rem"
-                                                          Click="@(() => AddSet())"
-                                                          Icon="add"/>
-                                            <RadzenButton Variant="Variant.Text"
-                                                          Style="width: 5rem"
-                                                          ButtonStyle="ButtonStyle.Danger"
-                                                          Click="@(() => RemoveLastSet())"
-                                                          Icon="remove"/>
-                                        </RadzenStack>
-                                    </RadzenStack>
-                                }
-                            </ChildContent>
-                            <SummaryTemplate>
-                                <RadzenCard Variant="Variant.Outlined" class="rz-mt-4">
-                                    <RadzenText class="h-100 rz-mb-0 w-100"
-                                                TextStyle="TextStyle.H6">@routineExercise.Exercise?.Name</RadzenText>
-                                </RadzenCard>
-                            </SummaryTemplate>
-                        </RadzenPanel>
-                    }
-            </RadzenStack>
-        </RadzenStepsItem>
-        <RadzenStepsItem Text="Finish">
-            <RadzenStack Orientation="Orientation.Horizontal" 
-                         class="w-100">
-                <RadzenRow class="w-100">
-                    <RadzenColumn Size="6">
-                        <RadzenStack Orientation="Orientation.Vertical"
-                                     class="w-100">
-                            <RadzenLabel Component="@nameof(WorkoutSessionEntity.WorkoutDate)"
-                                         Text="Date"
-                                         class="w-100"/>
-                            <RadzenDatePicker TValue="DateTime"
-                                              DateFormat="MM/dd/yyyy"
-                                              @bind-Value="@_model.WorkoutDate"
-                                              Name="@nameof(WorkoutSessionEntity.WorkoutDate)"/>
-                        </RadzenStack>
-                    </RadzenColumn>
-                    <RadzenColumn Size="6">
-                        <RadzenStack Orientation="Orientation.Vertical"
-                                     class="w-100">
-                            <RadzenLabel Component="@nameof(WorkoutSessionEntity.Mood)"
-                                         Text="How did you fell?"/>
-                            <RadzenDropDown Data="@_moods"
-                                            TValue="Mood"
-                                            @bind-Value="@_model.Mood"
-                                            class="w-100">
-                                <Template Context="item">
-                                    @((item as Enum)?.GetEnumDescription())
-                                </Template>
-                            </RadzenDropDown>
-                        </RadzenStack>
-                    </RadzenColumn>
-                    <RadzenColumn Size="12">
-                        <RadzenStack Orientation="Orientation.Vertical"
-                                     class="w-100">
-                            <RadzenLabel Component="Notes"
-                                         Text="Notes"/>
-                            <RadzenTextArea Name="@nameof(WorkoutSessionEntity.Mood)"
-                                            class="w-100"/>
-                        </RadzenStack>
-                    </RadzenColumn>
-                    <RadzenColumn Size="12">
-                        <RadzenButton Text="Complete"
-                                      class="w-100"
-                                      Icon="check"/>
-                    </RadzenColumn>
-                </RadzenRow>
-            </RadzenStack>
+        <RadzenStepsItem>
+            <RadzenText Text="Summary" TextStyle="TextStyle.H3"/>
+            <hr/>
+            <div class="overflow-auto" style="height: calc(100vh - 14rem)">
+                <RadzenStack Orientation="Orientation.Horizontal"
+                             class="w-100">
+                    <RadzenStack Orientation="Orientation.Vertical" class="w-50" Gap="0.25rem">
+                        <RadzenLabel>Workout date</RadzenLabel>
+                        <RadzenDatePicker TValue="DateTime" @bind-Value="@_model.WorkoutDate" class="w-100"
+                                          DateFormat="dd/MM/yyyy"/>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Vertical" class="w-50" Gap="0.25rem">
+                        <RadzenLabel>Duration</RadzenLabel>
+                        <RadzenTimeSpanPicker TValue="TimeSpan?" @bind-Value="@_model.Duration" class="w-100"/>
+                    </RadzenStack>
+                </RadzenStack>
+                <RadzenStack Orientation="Orientation.Vertical" class="w-100" Gap="0.25rem">
+                    <RadzenLabel>Notes</RadzenLabel>
+                    <RadzenTextArea @bind-Value="_model.Notes" class="w-100" />
+                </RadzenStack>
+                <RadzenButton Text="Save" Icon="check" class="w-100 my-3" Click="@Complete"/>
+            </div>
         </RadzenStepsItem>
     </Steps>
 </RadzenSteps>

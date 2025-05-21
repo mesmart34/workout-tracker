@@ -1,0 +1,65 @@
+@using WorkoutTracker.Shared.Resources
+
+<div class="@($"p-0 rz-border-radius-1 rz-background-color-base-200 my-3 mx-2 rz-shadow-2 exercise-panel")">
+    <div class="p-3 d-flex justify-content-between rz-ripple" @onclick="@(() => SwitchMode())">
+        <div class="d-flex">
+            <RadzenBadge IsPill="true" Shade="Shade.Dark" BadgeStyle="BadgeStyle.Base"
+                         Text="@($"{Model.Order + 1}")" class="mx-1"/>
+            <RadzenText TextStyle="TextStyle.H6" Text="@Model.Exercise.Name" class="m-0"/>
+        </div>
+        <RadzenIcon Icon="@(!_opened ? "keyboard_arrow_down" : "keyboard_arrow_up")"/>
+    </div>
+    @if (Model.Sets.Any())
+    {
+        <hr class="my-0"/>
+    }
+    <div class="p-3 rz-background-color-base-300">
+        @if (!_opened)
+        {
+            <RadzenStack Orientation="Orientation.Vertical" Gap="0.125rem">
+                @foreach (var set in Model.Sets)
+                {
+                    <RadzenRow Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Stretch" AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="6">
+                            <RadzenText TextStyle="TextStyle.Body2" class="m-0">
+                                <b>Reps: @set.Reps</b>
+                            </RadzenText>
+                        </RadzenColumn>
+                        <RadzenColumn Size="6">
+                            <RadzenText TextStyle="TextStyle.Body2" class="m-0">
+                                <b>Weight: @set.Weight</b>
+                            </RadzenText>
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+            </RadzenStack>
+        }
+        else
+        {
+            <RadzenStack class="h-100">
+                <RadzenStack Orientation="Orientation.Vertical">
+                    @foreach (var set in Model.Sets)
+                    {
+                        <RadzenStack Orientation="Orientation.Horizontal" class="w-100">
+                            <RadzenStack Orientation="Orientation.Vertical" class="w-50" Gap="0.25rem">
+                                <RadzenLabel Text="Reps"/>
+                                <RadzenNumeric TValue="int" @bind-Value="@set.Reps" Min="0"/>
+                            </RadzenStack>
+                            <RadzenStack Orientation="Orientation.Vertical" class="w-50" Gap="0.25rem">
+                                <RadzenLabel Text="Weight"/>
+                                <RadzenNumeric TValue="float" @bind-Value="@set.Weight" Min="0"/>
+                            </RadzenStack>
+                            <RadzenStack Orientation="Orientation.Vertical" Gap="0.25rem" >
+                                <RadzenLabel>&nbsp</RadzenLabel>
+                                <RadzenStack Orientation="Orientation.Horizontal">
+                                    <RadzenButton Icon="add" Click="@(() => Add(set))"/>
+                                    <RadzenButton Icon="delete" Click="@(() => Remove(set))"/>
+                                </RadzenStack>
+                            </RadzenStack>
+                        </RadzenStack>
+                    }
+                </RadzenStack>
+            </RadzenStack>
+        }
+    </div>
+</div>

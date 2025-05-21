@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WorkoutTracker.Infrastructure.Db;
@@ -11,9 +12,11 @@ using WorkoutTracker.Infrastructure.Db;
 namespace WorkoutTracker.Infrastructure.Db.Migrations
 {
     [DbContext(typeof(WorkoutTrackerDbContext))]
-    partial class WorkoutTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515101228_AddedCompleteToWokrout")]
+    partial class AddedCompleteToWokrout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -346,11 +349,6 @@ namespace WorkoutTracker.Infrastructure.Db.Migrations
                     b.Property<int>("Mood")
                         .HasColumnType("integer")
                         .HasColumnName("mood");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
 
                     b.Property<Guid>("RoutineId")
                         .HasColumnType("uuid")

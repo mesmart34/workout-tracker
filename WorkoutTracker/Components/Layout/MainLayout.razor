@@ -40,13 +40,16 @@
                             <RadzenPanelMenuItem Text="@Resource.Equipments" Icon="fitness_center" Path="/equipments"/>
                             <RadzenPanelMenuItem Text="@Resource.Exercises" Icon="sports_gymnastics" Path="/exercises"/>
                             <RadzenPanelMenuItem Text="@Resource.Routines" Icon="list_alt" Path="routines"/>
-                            <RadzenPanelMenuItem Text="Workout sessions" Icon="sports" Path="workouts"/>
+                            <RadzenPanelMenuItem Text="Workout" Icon="sports">
+                                <RadzenPanelMenuItem Text="Sessions" Path="/workouts" Icon="sports"/>
+                                <RadzenPanelMenuItem Text="Schedule" Path="/workout-schedule" Icon="calendar_month"/>
+                            </RadzenPanelMenuItem>
                         </RadzenPanelMenu>
                     </RadzenSidebar>
                     <RadzenBody>
-                        <div class="rz-p-4 row">
+                        <div class="row">
                             <div class="col-3 d-none d-md-block"></div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-lg-6 h-100">
                                 @Body
                             </div>
                             <div class="col-3 d-none d-md-block"></div>

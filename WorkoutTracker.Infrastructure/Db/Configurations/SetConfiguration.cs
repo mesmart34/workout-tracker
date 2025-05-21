@@ -10,19 +10,14 @@ public class SetConfiguration : IEntityTypeConfiguration<SetEntity>
     {
         builder.Configure("set");
         
-        builder.Navigation(x => x.WorkoutSession).AutoInclude();
-        builder.HasOne(x => x.WorkoutSession)
+        builder.HasOne(x => x.WorkoutSessionExerciseEntity)
             .WithMany(x => x.Sets)
-            .HasForeignKey(x => x.WorkoutSessionId)
-            .OnDelete(DeleteBehavior.SetNull);
-
-        builder.Navigation(x => x.Exercise).AutoInclude();
-        builder.HasOne(x => x.Exercise)
-            .WithMany()
-            .HasForeignKey(x => x.ExerciseId)
+            .HasForeignKey(x => x.WorkoutSessionExerciseId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.Property(x => x.Duration);
+        
+        builder.Property(x => x.Order).IsRequired();
 
         builder.Property(x => x.Reps)
             .IsRequired();

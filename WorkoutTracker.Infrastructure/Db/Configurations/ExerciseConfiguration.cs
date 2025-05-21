@@ -15,8 +15,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<ExerciseEntity>
         
         builder.Property(x => x.ExerciseType)
             .IsRequired();
-
-        builder.Navigation(x => x.Equipment).AutoInclude();
+        
         builder.Property(x => x.EquipmentId);
         builder.HasOne(x => x.Equipment)
             .WithMany()

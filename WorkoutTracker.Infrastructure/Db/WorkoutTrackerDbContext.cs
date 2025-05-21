@@ -34,6 +34,8 @@ public sealed class WorkoutTrackerDbContext : DbContext
     
     public DbSet<WorkoutSessionEntity> WorkoutSessions { get; set; }
     
+    public DbSet<WorkoutSessionExerciseEntity> WorkoutSessionsExercises { get; set; }
+    
     public DbSet<SetEntity> Sets { get; set; }
     
 }
