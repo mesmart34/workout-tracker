@@ -14,13 +14,9 @@ public class WorkoutSessionEntity : BaseEntity, IHasUser
 
     public string Notes { get; set; } = string.Empty;
     
-    public Guid RoutineId { get; set; }
-    
     public virtual RoutineEntity? Routine { get; set; }
     
     public bool Complete { get; set; }
-
-    public Guid UserId { get; set; }
 
     public UserEntity User { get; set; } = null!;
 }

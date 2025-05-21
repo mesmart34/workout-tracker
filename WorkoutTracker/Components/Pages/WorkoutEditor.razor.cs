@@ -13,7 +13,6 @@ public partial class WorkoutEditor : ComponentBase
     private List<RoutineEntity> _routines = new();
     private WorkoutSessionEntity _model = new();
     private RadzenSteps _steps = new();
-    private bool _opened = false;
     private Dictionary<WorkoutSessionExerciseEntity, WorkoutExerciseEditor> _workoutExerciseEditors = new();
     
     [Parameter]
@@ -55,7 +54,7 @@ public partial class WorkoutEditor : ComponentBase
         _model.WorkoutDate = DateTime.UtcNow;
         foreach (var routineExercise in _model.Routine.RoutineExercises)
         {
-            if (routineExercise.Exercise == null || !routineExercise.ExerciseId.HasValue)
+            if (routineExercise.Exercise == null)
             {
                 continue;
             }
@@ -63,7 +62,6 @@ public partial class WorkoutEditor : ComponentBase
             _model.Exercises.Add(new WorkoutSessionExerciseEntity()
             {
                 Exercise = routineExercise.Exercise,
-                ExerciseId = routineExercise.ExerciseId.Value,
                 Order = routineExercise.Order,
                 WorkoutSession = _model,
                 Sets = new()

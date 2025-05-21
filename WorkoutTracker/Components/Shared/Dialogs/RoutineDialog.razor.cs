@@ -44,7 +44,7 @@ public partial class RoutineDialog : ComponentBase
         _equipments = await EquipmentService.Get();
         _exercises = await ExerciseService.Get();
 
-        _model.RoutineExercises = await RoutineExerciseService.Get(x => x.RoutineId == _model.Id);
+        _model.RoutineExercises = await RoutineExerciseService.Get(x => x.Routine.Id == _model.Id);
 
         await base.OnInitializedAsync();
     }

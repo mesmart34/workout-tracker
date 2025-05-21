@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WorkoutTracker.Domain;
-using WorkoutTracker.Domain.Entities;
+using WorkoutTracker.Infrastructure.Contracts;
+using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker.Infrastructure;
 
 public static class ConfigurationHelper
 {
-    public static void Configure<T>(this EntityTypeBuilder<T> builder, string tableName) where T : BaseEntity
+    public static void Configure<T>(this EntityTypeBuilder<T> builder, string tableName) where T : BaseTableEntity
     {
         builder.ToTable(tableName);
 
@@ -24,7 +24,7 @@ public static class ConfigurationHelper
         builder.Property(x => x.IsDeleted);
     }
     
-    public static void ConfigureWithUser<T>(this EntityTypeBuilder<T> builder, string tableName) where T : BaseEntity, IHasUser
+    public static void ConfigureWithUser<T>(this EntityTypeBuilder<T> builder, string tableName) where T : BaseTableEntity, IHasTableUser
     {
         Configure(builder, tableName);
 
@@ -35,7 +35,7 @@ public static class ConfigurationHelper
             .HasForeignKey(x => x.UserId);
     }
 
-    public static void ConfigureNamed<T>(this EntityTypeBuilder<T> builder, string tableName) where T : BaseNamedEntity
+    public static void ConfigureNamed<T>(this EntityTypeBuilder<T> builder, string tableName) where T : BaseTableNamedEntity
     {
         Configure(builder, tableName);
         builder.Property(x => x.Name)

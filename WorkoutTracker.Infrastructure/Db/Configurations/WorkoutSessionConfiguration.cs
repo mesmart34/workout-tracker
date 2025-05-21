@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WorkoutTracker.Domain.Entities;
+using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker.Infrastructure.Db.Configurations;
 
-public class WorkoutSessionConfiguration : IEntityTypeConfiguration<WorkoutSessionEntity>
+public class WorkoutSessionConfiguration : IEntityTypeConfiguration<TableWorkoutSessionEntity>
 {
-    public void Configure(EntityTypeBuilder<WorkoutSessionEntity> builder)
+    public void Configure(EntityTypeBuilder<TableWorkoutSessionEntity> builder)
     {
         builder.Configure("workout_session");
 

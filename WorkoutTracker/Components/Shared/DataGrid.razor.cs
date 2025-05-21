@@ -2,9 +2,11 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
+using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Application.Service;
 using WorkoutTracker.Common;
 using WorkoutTracker.Domain.Entities;
+using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker.Components.Shared;
 
@@ -20,7 +22,7 @@ public partial class DataGrid<T> where T : BaseEntity, new()
     
     [Parameter] 
     [Required]
-    public BaseService<T> Service { get; set; } = null!;
+    public IScopedService<T> Service { get; set; } = null!;
     
     [Parameter]
     public Action? AddItemAction { get; set; }

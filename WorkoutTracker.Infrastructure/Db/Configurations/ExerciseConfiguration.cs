@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WorkoutTracker.Domain.Entities;
+using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker.Infrastructure.Db.Configurations;
 
-public class ExerciseConfiguration : IEntityTypeConfiguration<ExerciseEntity>
+public class ExerciseConfiguration : IEntityTypeConfiguration<TableExerciseEntity>
 {
-    public void Configure(EntityTypeBuilder<ExerciseEntity> builder)
+    public void Configure(EntityTypeBuilder<TableExerciseEntity> builder)
     {
         builder.ConfigureNamed("exercise");
 

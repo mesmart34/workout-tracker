@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WorkoutTracker.Domain.Entities;
+using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker.Infrastructure.Db.Configurations;
 
-public class RoutineConfiguration : IEntityTypeConfiguration<RoutineEntity>
+public class RoutineConfiguration : IEntityTypeConfiguration<TableRoutineEntity>
 {
-    public void Configure(EntityTypeBuilder<RoutineEntity> builder)
+    public void Configure(EntityTypeBuilder<TableRoutineEntity> builder)
     {
         builder.ConfigureNamed("routine");
         

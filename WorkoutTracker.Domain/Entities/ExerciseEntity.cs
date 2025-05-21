@@ -8,13 +8,9 @@ public class ExerciseEntity : BaseNamedEntity, IHasUser
     
     public MuscleGroup MuscleGroup { get; set; }
     
-    public Guid? EquipmentId { get; set; }
-    
     public virtual EquipmentEntity? Equipment { get; set; }
 
     public virtual List<RoutineExerciseEntity> RoutineExercises { get; set; } = new();
-    
-    public Guid UserId { get; set; }
 
     public UserEntity User { get; set; } = null!;
 }

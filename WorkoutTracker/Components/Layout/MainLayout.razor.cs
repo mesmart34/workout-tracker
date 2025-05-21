@@ -38,7 +38,7 @@ public partial class MainLayout
             }
 
         }
-        catch(Exception ex){
+        catch(Exception){
             NavigationManager.NavigateTo("/login", true);
         }
     }

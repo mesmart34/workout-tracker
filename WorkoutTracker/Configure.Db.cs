@@ -3,6 +3,7 @@ using WorkoutTracker.Application.Contracts;
 using WorkoutTracker.Domain.Common;
 using WorkoutTracker.Domain.Entities;
 using WorkoutTracker.Infrastructure.Db;
+using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker;
 
@@ -26,7 +27,7 @@ public static class ConfigureDb
     {
         if (!db.Users.Any())
         {
-            await db.Users.AddAsync(new UserEntity()
+            await db.Users.AddAsync(new TableUserEntity()
             {
                 FirstName = "John",
                 LastName = "Doe",
@@ -43,21 +44,21 @@ public static class ConfigureDb
         if (!db.Equipments.Any())
         {
             await db.Equipments.AddRangeAsync(
-                new EquipmentEntity()
+                new TableEquipmentEntity()
                 {
                     Name = "Highlets",
                     DateCreated = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
                     User = user,
                 },
-                new EquipmentEntity()
+                new TableEquipmentEntity()
                 {
                     Name = "Parallets",
                     DateCreated = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
                     User = user,
                 },
-                new EquipmentEntity()
+                new TableEquipmentEntity()
                 {
                     Name = "Weighted vest",
                     DateCreated = DateTime.UtcNow,
@@ -69,7 +70,7 @@ public static class ConfigureDb
 
         if (!db.Exercises.Any())
         {
-            await db.Exercises.AddRangeAsync(new ExerciseEntity()
+            await db.Exercises.AddRangeAsync(new TableExerciseEntity()
                 {
                     Name = "Pull ups",
                     Equipment = db.Equipments.First(),
@@ -79,7 +80,7 @@ public static class ConfigureDb
                     DateUpdated = DateTime.UtcNow,
                     User = user,
                 },
-                new ExerciseEntity()
+                new TableExerciseEntity()
                 {
                     Name = "Chin ups",
                     Equipment = db.Equipments.First(),
@@ -89,7 +90,7 @@ public static class ConfigureDb
                     DateUpdated = DateTime.UtcNow,
                     User = user,
                 },
-                new ExerciseEntity()
+                new TableExerciseEntity()
                 {
                     Name = "Rows",
                     Equipment = db.Equipments.First(),
@@ -104,7 +105,7 @@ public static class ConfigureDb
 
         if (!db.Routines.Any())
         {
-            await db.Routines.AddRangeAsync(new RoutineEntity()
+            await db.Routines.AddRangeAsync(new TableRoutineEntity()
             {
                 Name = "Pull day",
                 DateCreated = DateTime.UtcNow,
@@ -117,7 +118,7 @@ public static class ConfigureDb
         if (!db.RoutineExercises.Any())
         {
             var exercises = await db.Exercises.ToListAsync();
-            var routineExercises = db.Exercises.ToList().Select(x => new RoutineExerciseEntity()
+            var routineExercises = db.Exercises.ToList().Select(x => new TableRoutineExerciseEntity()
             {
                 Exercise = x,
                 Notes = string.Empty,
@@ -134,7 +135,7 @@ public static class ConfigureDb
         if (!db.WorkoutSessions.Any())
         {
             var routine = await db.Routines.FirstAsync();
-            await db.WorkoutSessions.AddRangeAsync(new WorkoutSessionEntity()
+            await db.WorkoutSessions.AddRangeAsync(new TableWorkoutSessionEntity()
             {
                 Mood = Mood.Ok,
                 Duration = TimeSpan.FromHours(1),
@@ -157,7 +158,7 @@ public static class ConfigureDb
             var workoutSession = await db.WorkoutSessions.FirstOrDefaultAsync();
             await db.WorkoutSessionsExercises.AddRangeAsync(new []
             {
-                new WorkoutSessionExerciseEntity()
+                new TableWorkoutSessionExerciseEntity()
                 {
                     Exercise = exercises.First()!,
                     WorkoutSession = workoutSession!,
@@ -177,7 +178,7 @@ public static class ConfigureDb
 
             await db.Sets.AddRangeAsync(new[]
             {
-                new SetEntity()
+                new TableSetEntity()
                 {
                     Duration = TimeSpan.FromMinutes(5),
                     Reps = 14,
@@ -187,7 +188,7 @@ public static class ConfigureDb
                     DateUpdated = DateTime.UtcNow,
                     User = user
                 },
-                new SetEntity()
+                new TableSetEntity()
                 {
                     Duration = TimeSpan.FromMinutes(5),
                     Reps = 9,

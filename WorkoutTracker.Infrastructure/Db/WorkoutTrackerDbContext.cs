@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WorkoutTracker.Domain.Entities;
 using WorkoutTracker.Infrastructure.Db.Configurations;
+using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker.Infrastructure.Db;
 
@@ -22,20 +23,20 @@ public sealed class WorkoutTrackerDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<TableUserEntity> Users { get; set; }
     
-    public DbSet<EquipmentEntity> Equipments { get; set; }
+    public DbSet<TableEquipmentEntity> Equipments { get; set; }
     
-    public DbSet<ExerciseEntity> Exercises { get; set; }
+    public DbSet<TableExerciseEntity> Exercises { get; set; }
     
-    public DbSet<RoutineEntity> Routines { get; set; }
+    public DbSet<TableRoutineEntity> Routines { get; set; }
     
-    public DbSet<RoutineExerciseEntity> RoutineExercises { get; set; }
+    public DbSet<TableRoutineExerciseEntity> RoutineExercises { get; set; }
     
-    public DbSet<WorkoutSessionEntity> WorkoutSessions { get; set; }
+    public DbSet<TableWorkoutSessionEntity> WorkoutSessions { get; set; }
     
-    public DbSet<WorkoutSessionExerciseEntity> WorkoutSessionsExercises { get; set; }
+    public DbSet<TableWorkoutSessionExerciseEntity> WorkoutSessionsExercises { get; set; }
     
-    public DbSet<SetEntity> Sets { get; set; }
+    public DbSet<TableSetEntity> Sets { get; set; }
     
 }

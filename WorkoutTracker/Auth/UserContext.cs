@@ -6,8 +6,8 @@ namespace WorkoutTracker.Auth;
 public class UserContext : IUserContext
 {
     public Guid Id { get; set; }
-    
-    public UserEntity User { get; set; }
+
+    public UserEntity User { get; set; } = null!;
     
     public string? Email { get; set; }
     
