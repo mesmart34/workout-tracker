@@ -7,7 +7,10 @@ using WorkoutTracker.Infrastructure.Entities;
 
 namespace WorkoutTracker.Application.Service;
 
-public class WorkoutSessionService(IDbContextFactory<WorkoutTrackerDbContext> contextFactory, IUserContext userContext, IMapper mapper) : BaseService<TableWorkoutSessionEntity, WorkoutSessionEntity>(contextFactory, userContext, mapper)
+public class WorkoutSessionService(
+    IDbContextFactory<WorkoutTrackerDbContext> contextFactory,
+    IUserContext userContext,
+    IMapper mapper) : BaseService<TableWorkoutSessionEntity, WorkoutSessionEntity>(contextFactory, userContext, mapper)
 {
     
 }

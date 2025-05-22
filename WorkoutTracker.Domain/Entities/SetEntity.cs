@@ -11,8 +11,6 @@ public class SetEntity : BaseEntity, IHasUser
     public float Weight { get; set; }
     
     public TimeSpan? Duration { get; set; }
-    
-    public Guid UserId { get; set; }
 
     public UserEntity User { get; set; } = null!;
 }

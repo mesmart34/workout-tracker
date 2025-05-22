@@ -8,6 +8,9 @@ public class ExerciseProfile : AutoMapper.Profile
     public ExerciseProfile()
     {
         CreateMap<TableExerciseEntity, ExerciseEntity>();
-        CreateMap<ExerciseEntity, TableExerciseEntity>();
+        CreateMap<ExerciseEntity, TableExerciseEntity>()
+            .ForMember(x => x.User, o => o.Ignore())
+            .ForMember(x => x.Equipment, o => o.Ignore())
+            .ForMember(x => x.RoutineExercises, o => o.Ignore());
     }
 }

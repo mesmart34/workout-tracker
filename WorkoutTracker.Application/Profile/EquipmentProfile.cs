@@ -8,6 +8,7 @@ public class EquipmentProfile : AutoMapper.Profile
     public EquipmentProfile()
     {
         CreateMap<TableEquipmentEntity, EquipmentEntity>();
-        CreateMap<EquipmentEntity, TableEquipmentEntity>();
+        CreateMap<EquipmentEntity, TableEquipmentEntity>()
+            .ForMember(x => x.User, o => o.Ignore());
     }
 }

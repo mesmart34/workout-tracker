@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace WorkoutTracker.Application.Utils;
 
-public static class EnumDescriptionExtruder
+public static class EnumHelper
 {
     public static string GetEnumDescription(this Enum value)
     {

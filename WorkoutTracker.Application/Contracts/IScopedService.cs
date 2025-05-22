@@ -10,9 +10,10 @@ public interface IScopedService<TService> where TService : BaseEntity
     public Task AddRange(List<TService> entities);
 
     public Task Update(TService entity);
-    public  Task<List<TService>> Get(Expression<Func<TService, bool>>? predicate = null);
+    
+    public  Task<List<TService>> Get(Expression<Func<TService, bool>>? predicate = null, bool ignoreDeletion = false);
 
-    public Task<TService?> Get(Guid id);
+    public Task<TService?> Get(Guid id, bool ignoreDeletion = false);
     
     public Task Remove(TService entity);
 }

@@ -8,6 +8,8 @@ public class RoutineProfile : AutoMapper.Profile
     public RoutineProfile()
     {
         CreateMap<TableRoutineEntity, RoutineEntity>();
-        CreateMap<RoutineEntity, TableRoutineEntity>();
+        CreateMap<RoutineEntity, TableRoutineEntity>()
+            .ForMember(x => x.User, o => o.Ignore())
+            .ForMember(x => x.RoutineExercises, o => o.Ignore());
     }
 }
